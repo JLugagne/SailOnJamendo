@@ -40,7 +40,10 @@ OTHER_FILES += qml/SailOnJamendo.qml \
     qml/pages/JamDelegateTrack.qml \
     qml/images/icon-m-toolbar-mediacontrol-next.svg \
     qml/images/icon.svg \
-    SailOnJamendo.png
+    SailOnJamendo.png \
+    qml/js/jamconfig.js \
+    .gitignore \
+    README.md
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

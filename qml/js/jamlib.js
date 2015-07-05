@@ -1,7 +1,6 @@
 .pragma library
 
-var jamAppId = "0a7472b2";
-var jamApiBase = "https://api.jamendo.com/v3.0";
+Qt.include("jamconfig.js")
 
 var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; QtObject { \
     id: jamModelIntern
