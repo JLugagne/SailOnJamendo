@@ -10,7 +10,7 @@
 #   - translation filenames have to be changed
 
 # The name of your application
-TARGET = SailOnJamendo
+TARGET = harbour-sailonjamendo
 
 CONFIG += sailfishapp
 PKGCONFIG += sailfishapp
@@ -19,17 +19,10 @@ QT += multimedia
 
 SOURCES += src/SailOnJamendo.cpp
 
-OTHER_FILES += qml/SailOnJamendo.qml \
+OTHER_FILES += \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
-    qml/pages/SecondPage.qml \
-    rpm/SailOnJamendo.changes.in \
-    rpm/SailOnJamendo.spec \
-    rpm/SailOnJamendo.yaml \
-    SailOnJamendo.desktop \
     qml/js/jamlib.js \
     qml/pages/JamRadios.qml \
-    qml/pages/JamFeed.qml \
     qml/pages/JamPlayer.qml \
     qml/pages/JamSearch.qml \
     qml/pages/JamAlbum.qml \
@@ -40,10 +33,17 @@ OTHER_FILES += qml/SailOnJamendo.qml \
     qml/pages/JamDelegateTrack.qml \
     qml/images/icon-m-toolbar-mediacontrol-next.svg \
     qml/images/icon.svg \
-    SailOnJamendo.png \
     qml/js/jamconfig.js \
     .gitignore \
-    README.md
+    README.md \
+    harbour-sailonjamendo.png \
+    harbour-sailonjamendo.desktop \
+    rpm/Fatal: Too many spec files - please use -s to identify which one to use.spec \
+    rpm/SailOnJamendo.spec \
+    rpm/SailOnJamendo.yaml \
+    rpm/SailOnJamendo.changes.in \
+    qml/harbour-sailonjamendo.qml \
+    qml/pages/JamFeed.qml
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

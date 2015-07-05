@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=SailOnJamendo
-Exec=SailOnJamendo
+Icon=harbour-sailonjamendo
+Exec=harbour-sailonjamendo
 Name=SailOnJamendo
 
