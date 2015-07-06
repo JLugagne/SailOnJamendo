@@ -18,7 +18,7 @@ var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; 
     property bool pause: false; \
     property bool hasNext: playingId != -1 && playingId != playlist.length-1
     property int playlistCount: jamModelIntern.playlist.length
-    onPlaylistChanged: { playingId = -1; if(playlist.length > 0) { playingId = 0; } \ }
+    onPlaylistChanged: { playingId = -1; if(playlist.length > 0) { playingId = 0; pause = false; } \ }
     onPlayingIdChanged: if(playingId < 0) { stream = ""; } else if(playlist.length > 0) { stream = playlist[playingId]; } \
     function nextTrack() { if(playingId != playlist.length-1) playingId++; }
 }', Qt.application, 'JamModel');

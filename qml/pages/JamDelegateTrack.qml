@@ -18,17 +18,21 @@ BackgroundItem {
 
         Image {
             id: img
-            source: "image://theme/icon-cover-play"
+            source: (JamModel.jamModel.stream == item.trackUrl && !JamModel.jamModel.pause) ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
             height: 45
             fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    JamModel.jamModel.playlist = [item.trackUrl]
-                    JamModel.jamPlaying.image = item.albumImage
-                    JamModel.jamPlaying.album = item.albumName
-                    JamModel.jamPlaying.artist = item.artistName
+                    if(JamModel.jamModel.stream != item.trackUrl){
+                        JamModel.jamModel.playlist = [item.trackUrl]
+                        JamModel.jamPlaying.image = item.albumImage
+                        JamModel.jamPlaying.album = item.albumName
+                        JamModel.jamPlaying.artist = item.artistName
+                    }else{
+                        JamModel.jamModel.pause = !JamModel.jamModel.pause;
+                    }
                 }
             }
         }

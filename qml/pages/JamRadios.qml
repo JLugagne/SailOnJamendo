@@ -57,6 +57,14 @@ Page {
                             JamModel.updatePlayRadio(modelData.name)
                         }
                     }
+
+                    Image {
+                        visible: JamModel.jamPlaying.image == modelData.image
+                        source: "image://theme/icon-cover-play"
+                        anchors.centerIn: parent
+                        width: parent.width/2
+                        height: parent.height/2
+                    }
                 }
             }
         }
