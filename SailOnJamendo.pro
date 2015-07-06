@@ -41,9 +41,10 @@ OTHER_FILES += \
     rpm/Fatal: Too many spec files - please use -s to identify which one to use.spec \
     rpm/SailOnJamendo.spec \
     rpm/SailOnJamendo.yaml \
-    rpm/SailOnJamendo.changes.in \
     qml/harbour-sailonjamendo.qml \
-    qml/pages/JamFeed.qml
+    qml/pages/JamFeed.qml \
+    rpm/harbour-sailonjamendo.spec \
+    rpm/SailOnJamendo.changes
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

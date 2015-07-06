@@ -1,0 +1,23 @@
+# Rename this file as SailOnJamendo.changes to include changelog
+# entries in your RPM file.
+#
+# Add new changelog entries following the format below.
+# Add newest entries to the top of the list.
+# Separate entries from eachother with a blank line.
+
+# * date Author's Name <author's email> version-release
+# - Summary of changes
+
+* Mon Jul 06 2015 Lugagne Jeremy <lugagne.jeremy@gmail.com> 0.5
+- Listing and playing radios
+- Searching for artists, albums and tracks
+- Playing options :
+    - Play only one track
+    - Play a full album
+    - Play all tracks of a selected artist
+- Cover :
+    - Go to next track if any
+    - Pause/Play the current track
+    - Add the album cover of the played track
+
+
