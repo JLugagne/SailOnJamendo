@@ -13,8 +13,7 @@ Audio {
     }
     autoPlay: true
     autoLoad: true
-    source: JamModel.jamModel.stream
-    onSourceChanged: console.log("source = "+source);
+    source: JamModel.jamModel.stream.url
     onStatusChanged: {
         if(status == Audio.EndOfMedia)
             JamModel.jamModel.nextTrack();

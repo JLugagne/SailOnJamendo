@@ -17,7 +17,14 @@ Page {
                     var pl = new Array();
                     var i = 0;
                     for(i = 0; i < JamModel.jamModel.album.tracks.length; i++){
-                        pl.push(JamModel.jamModel.album.tracks[i].audio)
+                        pl.push({
+                                    "url":JamModel.jamModel.album.tracks[i].audio,
+                                    "image":JamModel.jamModel.album.image,
+                                    "artist":JamModel.jamModel.album.artist_name,
+                                    "name":JamModel.jamModel.album.tracks[i].name,
+                                    "album":JamModel.jamModel.album.name,
+                                    "duration":JamModel.jamModel.album.tracks[i].duration
+                                });
                     }
                     JamModel.jamModel.playlist = pl;
                     JamModel.jamPlaying.image = JamModel.jamModel.album.image

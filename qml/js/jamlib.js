@@ -13,13 +13,20 @@ var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; 
     property variant artist; \
     property string searchIn; \
     property string searchFor; \
-    property string stream: ""; \
+    property variant stream:{
+                                "url":"", \
+                                "image":"../images/icon.svg", \
+                                "artist":"", \
+                                "name":"", \
+                                "album":"", \
+                                "duration":""\
+                            }; \
     property int playingId: -1; \
     property bool pause: false; \
     property bool hasNext: playingId != -1 && playingId != playlist.length-1
     property int playlistCount: jamModelIntern.playlist.length
     onPlaylistChanged: { playingId = -1; if(playlist.length > 0) { playingId = 0; pause = false; } \ }
-    onPlayingIdChanged: if(playingId < 0) { stream = ""; } else if(playlist.length > 0) { stream = playlist[playingId]; } \
+    onPlayingIdChanged: if(playingId < 0) { stream.url = ""; } else if(playlist.length > 0) { stream = playlist[playingId]; } \
     function nextTrack() { if(playingId != playlist.length-1) playingId++; }
 }', Qt.application, 'JamModel');
 
@@ -67,7 +74,16 @@ function cbPlayRadio(data)
 {
     var res = JSON.parse(data);
     var stream = res["results"][0]["stream"];
-    jamModel.playlist = [stream];
+    var image = res["results"][0]["image"];
+    var name = res["results"][0]["dispname"];
+    jamModel.playlist = [{
+                             "url":stream,
+                             "image":image,
+                             "artist":"radios",
+                             "name":name,
+                             "album":"radios",
+                             "duration":0
+                         }];
 }
 
 function cbFeeds(data)
@@ -102,7 +118,6 @@ function cbAlbum(data)
 
 function cbArtist(data)
 {
-    console.log(data)
     var res = JSON.parse(data);
     jamModel.artist = res["results"][0];
 }
@@ -162,7 +177,7 @@ function getArtist(artistId)
 {
     var module = "artists";
     var action = "tracks";
-    var args = "order=track_releasedate_desc&id="+artistId;
+    var args = "order=track_id_asc&id="+artistId;
     getData(module, action, args, cbArtist);
 }
 

@@ -18,15 +18,22 @@ BackgroundItem {
 
         Image {
             id: img
-            source: (JamModel.jamModel.stream == item.trackUrl && !JamModel.jamModel.pause) ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
+            source: (JamModel.jamModel.stream.url == item.trackUrl && !JamModel.jamModel.pause) ? "image://theme/icon-cover-pause" : "image://theme/icon-cover-play"
             height: 45
             fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if(JamModel.jamModel.stream != item.trackUrl){
-                        JamModel.jamModel.playlist = [item.trackUrl]
+                    if(JamModel.jamModel.stream.url != item.trackUrl){
+                        JamModel.jamModel.playlist = [{
+                                                          "url":item.trackUrl,
+                                                          "image":item.albumImage,
+                                                          "artist":item.artistName,
+                                                          "name":item.trackName,
+                                                          "album":item.albumName,
+                                                          "duration":item.trackDuration
+                                                      }]
                         JamModel.jamPlaying.image = item.albumImage
                         JamModel.jamPlaying.album = item.albumName
                         JamModel.jamPlaying.artist = item.artistName

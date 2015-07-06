@@ -6,11 +6,12 @@ CoverBackground {
     Image {
         id:img
         fillMode: Image.PreserveAspectCrop
-        source: JamModel.jamPlaying.image
-        width: parent.width*0.8
-        height: parent.width*0.8
-        y: 15
+        source: JamModel.jamModel.stream.image
+        width: parent.width*0.95
+        height: parent.width*0.95
+        y: 10
         anchors.horizontalCenter: parent.horizontalCenter
+
         Rectangle {
             id: rect
             visible: JamModel.jamModel.playlistCount > 0
@@ -25,7 +26,7 @@ CoverBackground {
 
         Label {
             visible: JamModel.jamModel.playlistCount > 0
-            text: (JamModel.jamPlaying.buffering != 100) ? "Buffering ("+JamModel.jamPlaying.buffering+"%)":  JamModel.timeToString(JamModel.jamPlaying.position)+"/"+JamModel.timeToString(JamModel.jamPlaying.duration)
+            text: (JamModel.jamPlaying.buffering != 100) ? "Buffering ("+JamModel.jamPlaying.buffering+"%)":  JamModel.timeToString(JamModel.jamPlaying.position)+"/"+JamModel.timeToString(JamModel.jamModel.stream.duration)
             anchors.horizontalCenter: rect.horizontalCenter
             anchors.verticalCenter: rect.verticalCenter
             font.pixelSize: 25
@@ -36,7 +37,7 @@ CoverBackground {
         id: artist
         visible: JamModel.jamModel.playlistCount > 0
         anchors.top: img.bottom
-        text: JamModel.jamPlaying.artist
+        text: JamModel.jamModel.stream.name
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 30
     }
@@ -44,14 +45,14 @@ CoverBackground {
         id: album
         visible: JamModel.jamModel.playlistCount > 0
         anchors.top: artist.bottom
-        text: JamModel.jamPlaying.album
+        text: JamModel.jamModel.stream.artist
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 25
     }
 
     CoverActionList {
         id: coverAction1
-        enabled: JamModel.jamModel.playlistCount == 1
+        enabled: JamModel.jamModel.playlistCount != 0 && JamModel.jamModel.playlistCount-1 == JamModel.jamModel.playingId
 
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
@@ -62,7 +63,7 @@ CoverBackground {
 
     CoverActionList {
         id: coverAction2
-        enabled: JamModel.jamModel.playlistCount > 1
+        enabled: JamModel.jamModel.playlistCount > 1 && !coverAction1.enabled
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
             iconSource: (JamModel.jamModel.pause) ? "image://theme/icon-cover-play" : "image://theme/icon-cover-pause"
