@@ -42,9 +42,10 @@ OTHER_FILES += \
     rpm/SailOnJamendo.spec \
     rpm/SailOnJamendo.yaml \
     qml/harbour-sailonjamendo.qml \
-    qml/pages/JamFeed.qml \
     rpm/harbour-sailonjamendo.spec \
-    rpm/SailOnJamendo.changes
+    rpm/SailOnJamendo.changes \
+    qml/pages/JamFeeds.qml \
+    qml/pages/JamFeed.qml
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

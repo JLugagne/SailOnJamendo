@@ -1,6 +1,7 @@
 # SailOnJamendo
 
 In the first version of the App, you aren't able to log you and get your playlist. The only functions you have is to search for Artists/Albums and Tracks and play them.
+
 All informations about the Jamendo's API is there : https://developer.jamendo.com/v3.0
 
 * Setting the API key

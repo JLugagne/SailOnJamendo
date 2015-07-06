@@ -34,7 +34,7 @@ import "pages"
 
 ApplicationWindow
 {
-    initialPage: Component { JamFeed { } }
+    initialPage: Component { JamFeeds { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 }
 
