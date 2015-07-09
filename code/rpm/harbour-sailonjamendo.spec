@@ -12,8 +12,8 @@ Name:       harbour-sailonjamendo
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    Online Jamendo's player
-Version:    0.5
+Summary:    Jamendo's musics player
+Version:    0.6
 Release:    1
 Group:      Applications/Multimedia
 License:    LICENSE
@@ -28,7 +28,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
 %description
-A simple application to access to the jamendo's database
+A simple application to have access to the jamendo's database and play music
 
 
 %prep

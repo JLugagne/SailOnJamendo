@@ -5,6 +5,15 @@ import "../js/jamlib.js" as JamModel
 Page {
     id: page
     SilicaFlickable {
+        anchors.fill: parent
+        PullDownMenu {
+            MenuItem {
+                enabled: JamModel.jamModel.playlistCount > 0
+                text: qsTr("Player")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+            }
+        }
         width: parent.width
         contentHeight: column.height
         Column {

@@ -1,7 +1,9 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+
 import "../js/jamlib.js" as JamModel
+import "../js/jamdb.js" as JamDB
 
 Page {
     id: page
@@ -9,12 +11,25 @@ Page {
         id: player
     }
 
+    Binding {
+        target: player
+        property: "pauseState"
+        value: JamModel.jamModel.pause
+        when: player.isPlayingState == JamModel.jamModel.pause
+    }
+    onStatusChanged: if(status == PageStatus.Active) JamDB.updateAlbums();
     onVisibleChanged: if(visible && list.count == 0) { JamModel.updateFeeds(); }
 
     SilicaListView {
         id: list
 
         PullDownMenu {
+            MenuItem {
+                enabled: JamModel.jamModel.playlistCount > 0
+                text: qsTr("Player")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+            }
             MenuItem {
                 text: qsTr("Radios")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamRadios.qml"))
@@ -48,10 +63,17 @@ Page {
         anchors.fill: parent
         spacing: Theme.paddingMedium
         header: PageHeader {
-            title: qsTr("Feeds")
+            title: qsTr("Last played")
         }
-        model: JamModel.jamModel.feeds
-        delegate: BackgroundItem {
+        model: JamDB.jamDB.lastAlbum
+        delegate: JamDelegateAlbum {
+            imgSource: modelData.albumImage
+            primaryDesc: modelData.albumTitle
+            secondaryDesc: modelData.albumArtist
+            album_id: modelData.albumId
+        }
+
+        /*BackgroundItem {
             width: list.width
             height: img.height
             Image {
@@ -84,7 +106,7 @@ Page {
                     onClicked: { JamModel.getFeed(JamModel.jamModel.feeds[index].id);  pageStack.push(Qt.resolvedUrl("JamFeed.qml")); }
                 }
             }
-        }
+        }*/
 
 
         BusyIndicator {

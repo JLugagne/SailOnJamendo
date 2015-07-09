@@ -35,16 +35,25 @@ Page {
             albumImage: modelData.album_image
             albumName: modelData.album_name
             artistName: modelData.artist_name
+            albumId: modelData.album.id
         }
     }
 
     SilicaListView {
         id: list
         anchors.fill: parent
-        anchors.margins: Theme.paddingMedium
         model: JamModel.jamModel.search
         header: PageHeader {
             title: "Results : "+JamModel.jamModel.searchIn
+        }
+
+        PullDownMenu {
+            MenuItem {
+                enabled: JamModel.jamModel.playlistCount > 0
+                text: qsTr("Player")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+            }
         }
         spacing: Theme.paddingSmall
         PushUpMenu {

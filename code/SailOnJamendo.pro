@@ -20,8 +20,7 @@ QT += multimedia
 SOURCES += src/SailOnJamendo.cpp
 
 OTHER_FILES += \
-    qml/cover/CoverPage.qml \
-    qml/js/jamlib.js \
+    qml/harbour-sailonjamendo.qml \
     qml/pages/JamRadios.qml \
     qml/pages/JamPlayer.qml \
     qml/pages/JamSearch.qml \
@@ -31,21 +30,23 @@ OTHER_FILES += \
     qml/pages/JamDelegateArtist.qml \
     qml/pages/JamDelegateAlbum.qml \
     qml/pages/JamDelegateTrack.qml \
+    qml/pages/JamFeeds.qml \
+    qml/pages/JamFeed.qml \
+    qml/pages/JamPlayerUi.qml \
     qml/images/icon-m-toolbar-mediacontrol-next.svg \
     qml/images/icon.svg \
+    qml/cover/CoverPage.qml \
     qml/js/jamconfig.js \
+    qml/js/jamlib.js \
     .gitignore \
     README.md \
     harbour-sailonjamendo.png \
     harbour-sailonjamendo.desktop \
-    rpm/Fatal: Too many spec files - please use -s to identify which one to use.spec \
     rpm/SailOnJamendo.spec \
-    rpm/SailOnJamendo.yaml \
-    qml/harbour-sailonjamendo.qml \
     rpm/harbour-sailonjamendo.spec \
-    rpm/SailOnJamendo.changes \
-    qml/pages/JamFeeds.qml \
-    qml/pages/JamFeed.qml
+    rpm/harbour-sailonjamendo.yaml \
+    rpm/harbour-sailonjamendo.changes \
+    qml/js/jamdb.js
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

@@ -14,6 +14,12 @@ Page {
             }
         PullDownMenu {
             MenuItem {
+                enabled: JamModel.jamModel.playlistCount > 0
+                text: qsTr("Player")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+            }
+            MenuItem {
                 text: "Play all tracks"
                 onClicked: {
                     var pl = new Array();

@@ -7,8 +7,8 @@ CoverBackground {
         id:img
         fillMode: Image.PreserveAspectCrop
         source: JamModel.jamModel.stream.image
-        width: parent.width*0.95
-        height: parent.width*0.95
+        width: parent.width*0.85
+        height: parent.width*0.85
         y: 10
         anchors.horizontalCenter: parent.horizontalCenter
 

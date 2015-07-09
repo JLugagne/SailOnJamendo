@@ -1,6 +1,7 @@
 .pragma library
 
 Qt.include("jamconfig.js")
+Qt.include("jamdb.js")
 
 var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; QtObject { \
     id: jamModelIntern
@@ -28,12 +29,14 @@ var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; 
     onPlaylistChanged: { playingId = -1; if(playlist.length > 0) { playingId = 0; pause = false; } \ }
     onPlayingIdChanged: if(playingId < 0) { stream.url = ""; } else if(playlist.length > 0) { stream = playlist[playingId]; } \
     function nextTrack() { if(playingId != playlist.length-1) playingId++; }
+    function previousTrack() { if(playingId > 0) playingId--; }
 }', Qt.application, 'JamModel');
 
 var jamPlaying = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; QtObject { \
     property int duration: 0; \
     property int position: 0; \
     property int buffering: 0; \
+    property int albumId: 0; \
     property string image: "../images/icon.svg"; \
     property string album: ""; \
     property string artist: ""; \
@@ -170,6 +173,7 @@ function getAlbum(id)
     var module = "albums";
     var action = "tracks";
     var args = "id="+id;
+    jamPlaying.albumId = id;
     getData(module, action, args, cbAlbum);
 }
 

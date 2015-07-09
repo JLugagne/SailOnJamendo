@@ -14,6 +14,7 @@ BackgroundItem {
     height: 90
     Image {
         id: img
+        width: 90
         height: 90
         source: item.imgSource
         fillMode: Image.PreserveAspectFit

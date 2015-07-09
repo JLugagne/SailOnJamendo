@@ -2,12 +2,14 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../js/jamlib.js" as JamModel
+import "../js/jamdb.js" as JamDB
 
 BackgroundItem {
     id: item
     property int trackDuration;
     property string trackName;
     property string trackUrl;
+    property string albumId;
     property string albumImage;
     property string albumName;
     property string artistName;
@@ -28,6 +30,7 @@ BackgroundItem {
                     if(JamModel.jamModel.stream.url != item.trackUrl){
                         JamModel.jamModel.playlist = [{
                                                           "url":item.trackUrl,
+                                                          "albumId":item.albumId,
                                                           "image":item.albumImage,
                                                           "artist":item.artistName,
                                                           "name":item.trackName,

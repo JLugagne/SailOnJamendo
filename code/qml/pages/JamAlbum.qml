@@ -12,6 +12,12 @@ Page {
         anchors.fill: parent
         PullDownMenu {
             MenuItem {
+                enabled: JamModel.jamModel.playlistCount > 0
+                text: qsTr("Player")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+            }
+            MenuItem {
                 text: "Play the album"
                 onClicked: {
                     var pl = new Array();
@@ -19,6 +25,7 @@ Page {
                     for(i = 0; i < JamModel.jamModel.album.tracks.length; i++){
                         pl.push({
                                     "url":JamModel.jamModel.album.tracks[i].audio,
+                                    "albumId":JamModel.jamModel.album.id,
                                     "image":JamModel.jamModel.album.image,
                                     "artist":JamModel.jamModel.album.artist_name,
                                     "name":JamModel.jamModel.album.tracks[i].name,
@@ -26,10 +33,10 @@ Page {
                                     "duration":JamModel.jamModel.album.tracks[i].duration
                                 });
                     }
-                    JamModel.jamModel.playlist = pl;
                     JamModel.jamPlaying.image = JamModel.jamModel.album.image
                     JamModel.jamPlaying.artist = JamModel.jamModel.album.artist_name
                     JamModel.jamPlaying.album = JamModel.jamModel.album.name
+                    JamModel.jamModel.playlist = pl;
                 }
             }
         }
@@ -65,6 +72,7 @@ Page {
             trackUrl: modelData.audio
             albumImage: JamModel.jamModel.album.image
             albumName: JamModel.jamModel.album.name
+            albumId: JamModel.jamModel.album.id
             artistName: JamModel.jamModel.album.artist_name
         }
 

@@ -13,6 +13,15 @@ Page {
         Column {
             id: column
             width: parent.width
+            PullDownMenu {
+                MenuItem {
+                    enabled: JamModel.jamModel.playlistCount > 0
+                    text: qsTr("Player")
+                    onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
+
+                }
+            }
+
             PageHeader {
                 title: "Search"
             }
