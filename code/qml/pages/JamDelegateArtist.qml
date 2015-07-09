@@ -3,13 +3,13 @@ import Sailfish.Silica 1.0
 
 import "../js/jamlib.js" as JamModel
 
-BackgroundItem {
+ListItem {
     id: item
     property string name
     property string image
     property int artist_id
     width: list.width
-    height: 90
+    contentHeight: 90
     Row {
         anchors.fill: parent
         spacing: Theme.paddingSmall
@@ -27,11 +27,14 @@ BackgroundItem {
             text: item.name
         }
     }
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            JamModel.getArtist(item.artist_id)
-            pageStack.push(Qt.resolvedUrl("JamArtist.qml"))
-        }
+    onClicked: {
+        JamModel.getArtist(item.artist_id)
+        pageStack.push(Qt.resolvedUrl("JamArtist.qml"))
     }
+    /*menu: ContextMenu {
+        MenuItem {
+            text: "Play all"
+            onClicked: JamModel.playAllArtist(item.artist_id)
+        }
+    }*/
 }

@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 
 import "../js/jamlib.js" as JamModel
 
-BackgroundItem {
+ListItem {
     id: item
     property string imgSource
     property string primaryDesc
@@ -11,7 +11,7 @@ BackgroundItem {
     property int album_id
 
     width: list.width
-    height: 90
+    contentHeight: 90
     Image {
         id: img
         width: 90
@@ -35,8 +35,9 @@ BackgroundItem {
         font.pixelSize: Theme.fontSizeExtraSmall
         text: item.secondaryDesc
     }
-    MouseArea {
+    onClicked: { JamModel.getAlbum(item.album_id); pageStack.push(Qt.resolvedUrl("JamAlbum.qml")) }
+    /*MouseArea {
         anchors.fill: parent
         onClicked: { JamModel.getAlbum(item.album_id); pageStack.push(Qt.resolvedUrl("JamAlbum.qml")) }
-    }
+    }*/
 }

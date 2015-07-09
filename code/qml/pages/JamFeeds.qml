@@ -62,10 +62,19 @@ Page {
 
         delegate: JamDelegateAlbum {
                 id: thisItem
+                ListView.onRemove: animateRemoval(thisItem)
                 imgSource: modelData.albumImage
                 primaryDesc: modelData.albumTitle
                 secondaryDesc: modelData.albumArtist
                 album_id: modelData.albumId
+                menu: ContextMenu {
+                    id: ctxMenu
+                    property int albumId
+                    MenuItem {
+                        text: "Forget it"
+                        onClicked: { thisItem.remorseAction("Forget "+modelData.albumTitle, function() { JamDB.forgetAlbum(modelData.albumId); }) }
+                    }
+                }
             }
 
 
