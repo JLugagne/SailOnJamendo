@@ -6,19 +6,22 @@ function updateAlbums(){
     JamDatabase.transaction(
             function(tx) {
                 var rs = tx.executeSql("SELECT * FROM album ORDER BY lastPlayed DESC");
-                var albums = new Array();
-                var i = 0;
-                for(i = 0; i < rs.rows.length; i++) {
-                    albums.push(rs.rows.item(i));
+                if(rs.rows.length > 0){
+                    var albums = new Array();
+                    var i = 0;
+                    for(i = 0; i < rs.rows.length; i++) {
+                        albums.push(rs.rows.item(i));
+                    }
+                    jamDB.lastAlbum = albums;
+                }else{
+                    jamDB.lastAlbum = [{"albumTitle": "You never played anything"}];
                 }
-                jamDB.lastAlbum = albums;
             }
     );
 }
 
 function addAlbumToDB(albumId, albumTitle, albumArtist, albumImage){
-    if(albumTitle == "") return;
-    console.log("addAlbumToDB = "+albumTitle)
+    if(albumTitle == "" || (albumTitle == "radios" && albumArtist == "radios")) return;
     JamDatabase.transaction(
             function(tx) {
                 var rs = tx.executeSql("SELECT * FROM album WHERE albumId = ?", [albumId]);
@@ -27,6 +30,15 @@ function addAlbumToDB(albumId, albumTitle, albumArtist, albumImage){
                 }else{
                     var res = tx.executeSql("UPDATE album SET lastPlayed = ?", [(new Date()).getTime()]);
                 }
+            }
+    );
+}
+
+
+function clearPlayedAlbums(){
+    JamDatabase.transaction(
+            function(tx) {
+                tx.executeSql("DELETE FROM album");
             }
     );
 }

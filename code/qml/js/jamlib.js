@@ -105,6 +105,9 @@ function cbSearchResults(data)
 {
     var res = JSON.parse(data);
     jamModel.search = res["results"];
+    if(jamModel.search.length == 0){
+        jamModel.search = [{"name": "Nothing found"}];
+    }
 }
 
 function cbAlbumsList(data)

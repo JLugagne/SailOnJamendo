@@ -35,7 +35,7 @@ Page {
             albumImage: modelData.album_image
             albumName: modelData.album_name
             artistName: modelData.artist_name
-            albumId: modelData.album.id
+            albumId: modelData.album_id
         }
     }
 

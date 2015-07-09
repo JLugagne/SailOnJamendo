@@ -6,7 +6,7 @@ import "../js/jamdb.js" as JamDB
 
 BackgroundItem {
     id: item
-    property int trackDuration;
+    property int trackDuration: 0;
     property string trackName;
     property string trackUrl;
     property string albumId;
@@ -24,6 +24,7 @@ BackgroundItem {
             height: 45
             fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
+            visible: item.trackDuration > 0
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -49,6 +50,7 @@ BackgroundItem {
 
         Label {
             anchors.verticalCenter: parent.verticalCenter
+            visible: item.trackDuration > 0
             text: "("+JamModel.timeToString(item.trackDuration)+")"
         }
 

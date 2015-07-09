@@ -25,13 +25,15 @@ Page {
                     var pl = new Array();
                     var i = 0;
                     for(i = 0; i < JamModel.jamModel.artist.tracks.length; i++){
+                        var tr = JamModel.jamModel.artist.tracks[i];
                         pl.push({
-                                    "url":JamModel.jamModel.artist.tracks[i].audio,
-                                    "image":JamModel.jamModel.artist.tracks[i].image,
+                                    "url":tr.audio,
+                                    "image":tr.image,
                                     "artist":JamModel.jamModel.artist.name,
-                                    "name":JamModel.jamModel.artist.tracks[i].name,
-                                    "album":JamModel.jamModel.artist.tracks[i].album_name,
-                                    "duration":JamModel.jamModel.artist.tracks[i].duration
+                                    "name":tr.name,
+                                    "album":tr.album_name,
+                                    "albumId":tr.album_id,
+                                    "duration":tr.duration
                                 });
                     }
                     JamModel.jamModel.playlist = pl;
@@ -64,6 +66,7 @@ Page {
                 albumImage: modelData.image
                 albumName: modelData.album_name
                 artistName: JamModel.jamModel.artist.name
+                albumId: modelData.album_id
                 //property int album_id: JamModel.jamModel.artist.tracks[index].album_id
             }
         }

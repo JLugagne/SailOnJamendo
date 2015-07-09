@@ -46,7 +46,9 @@ OTHER_FILES += \
     rpm/harbour-sailonjamendo.spec \
     rpm/harbour-sailonjamendo.yaml \
     rpm/harbour-sailonjamendo.changes \
-    qml/js/jamdb.js
+    qml/js/jamdb.js \
+    qml/pages/JamAbout.qml \
+    qml/pages/JamSettings.qml
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

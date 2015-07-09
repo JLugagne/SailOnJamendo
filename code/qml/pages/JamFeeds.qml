@@ -38,75 +38,35 @@ Page {
                 text: qsTr("Search")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamSearch.qml"))
             }
+        }
+        PushUpMenu {
             MenuItem {
-                text: qsTr("Refresh")
-                onClicked: { JamModel.jamModel.feeds = []; JamModel.updateFeeds(); }
+                text: qsTr("Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamSettings.qml"))
+
+            }
+            MenuItem {
+                text: qsTr("About")
+                onClicked: pageStack.push(Qt.resolvedUrl("JamAbout.qml"))
 
             }
         }
-/*
-        PushUpMenu {
-            Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                Switch {
-                    iconSource: "image://theme/icon-l-shuffle"
-                    onClicked: console.log("Switch 1 " + checked)
-                }
-                Switch {
-                    iconSource: "image://theme/icon-l-repeat"
-                    onClicked: console.log("Switch 2 " + checked)
-                }
-            }
-        }
-*/
-        //width: page.width
+
         anchors.fill: parent
         spacing: Theme.paddingMedium
         header: PageHeader {
             title: qsTr("Last played")
         }
+
         model: JamDB.jamDB.lastAlbum
+
         delegate: JamDelegateAlbum {
-            imgSource: modelData.albumImage
-            primaryDesc: modelData.albumTitle
-            secondaryDesc: modelData.albumArtist
-            album_id: modelData.albumId
-        }
-
-        /*BackgroundItem {
-            width: list.width
-            height: img.height
-            Image {
-                id: img
-                width: parent.width
-                source: JamModel.jamModel.feeds[index].images.size315_111
-                fillMode: Image.PreserveAspectFit
-                onSourceSizeChanged: if(status == Image.Ready) { height = sourceSize.height*(width/sourceSize.width); }
-
-                Rectangle {
-                    id: rect
-                    color: "black"
-                    opacity: 0.7
-                    anchors.bottom: parent.bottom
-                    height: 45
-                    width: parent.width
-                }
-
-                Label {
-                    x: Theme.paddingLarge
-                    text: JamModel.jamModel.feeds[index].subtitle.en
-                    anchors.horizontalCenter: rect.horizontalCenter
-                    anchors.verticalCenter: rect.verticalCenter
-                    font.bold: true
-                    font.pixelSize: 35
-                    color: "white"
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: { JamModel.getFeed(JamModel.jamModel.feeds[index].id);  pageStack.push(Qt.resolvedUrl("JamFeed.qml")); }
-                }
+                id: thisItem
+                imgSource: modelData.albumImage
+                primaryDesc: modelData.albumTitle
+                secondaryDesc: modelData.albumArtist
+                album_id: modelData.albumId
             }
-        }*/
 
 
         BusyIndicator {
