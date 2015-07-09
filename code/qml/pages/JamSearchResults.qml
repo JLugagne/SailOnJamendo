@@ -16,6 +16,15 @@ Page {
             primaryDesc: modelData.name
             secondaryDesc: modelData.artist_name
             album_id: modelData.id
+            menu: ContextMenu {
+                MenuItem {
+                    text: "Go to the artist"
+                    onClicked: {
+                        JamModel.getArtist(modelData.artist_id);
+                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
+                    }
+                }
+            }
         }
     }
     Component {
@@ -36,6 +45,22 @@ Page {
             albumName: modelData.album_name
             artistName: modelData.artist_name
             albumId: modelData.album_id
+            menu: ContextMenu {
+                MenuItem {
+                    text: "Go to the album"
+                    onClicked: {
+                        JamModel.getAlbum(modelData.album_id);
+                        pageStack.push(Qt.resolvedUrl("JamAlbum.qml"));
+                    }
+                }
+                MenuItem {
+                    text: "Go to the artist"
+                    onClicked: {
+                        JamModel.getArtist(modelData.artist_id);
+                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
+                    }
+                }
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import Sailfish.Silica 1.0
 import "../js/jamlib.js" as JamModel
 import "../js/jamdb.js" as JamDB
 
-BackgroundItem {
+ListItem {
     id: item
     property int trackDuration: 0;
     property string trackName;

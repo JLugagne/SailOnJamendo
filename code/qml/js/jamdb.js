@@ -15,7 +15,7 @@ function updateAlbums()
                     }
                     jamDB.lastAlbum = albums;
                 }else{
-                    jamDB.lastAlbum = [{"albumTitle": "You never played anything"}];
+                    jamDB.lastAlbum = [{"albumTitle": "The list is empty"}];
                 }
             }
     );
