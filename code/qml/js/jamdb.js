@@ -24,7 +24,8 @@ function addAlbumToDB(albumId, albumTitle, albumArtist, albumImage){
                 var rs = tx.executeSql("SELECT * FROM album WHERE albumId = ?", [albumId]);
                 if(rs.rows.length == 0){
                     var res = tx.executeSql("INSERT INTO album(albumId, lastPlayed, albumImage, albumTitle, albumArtist) VALUES(?, ?, ?, ?, ?)", [albumId, (new Date()).getTime(), albumImage, albumTitle, albumArtist]);
-                    console.log(res)
+                }else{
+                    var res = tx.executeSql("UPDATE album SET lastPlayed = ?", [(new Date()).getTime()]);
                 }
             }
     );
