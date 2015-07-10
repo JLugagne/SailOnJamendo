@@ -18,6 +18,13 @@ Page {
 
             }
             MenuItem {
+                text: qsTr("Go to artist")
+                onClicked: {
+                    JamModel.getArtist(JamModel.jamModel.album.artist_id)
+                    pageStack.push(Qt.resolvedUrl("JamArtist.qml"))
+                }
+            }
+            MenuItem {
                 text: "Play the album"
                 onClicked: {
                     var pl = new Array();
