@@ -79,7 +79,7 @@ Page {
                 height: column.width/8
                 color: "transparent"
                 Image {
-                    visible: (JamModel.jamModel.playingId > 0 || JamModel.jamModel.repeat)
+                    visible: (JamModel.jamModel.playingId > 0 || JamModel.jamModel.repeat) && JamModel.jamModel.playlistCount > 1
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-previous.svg"
                     width: parent.height
@@ -106,7 +106,7 @@ Page {
                 }
 
                 Image {
-                    visible: (JamModel.jamModel.playingId < JamModel.jamModel.playlistCount-1 || JamModel.jamModel.repeat)
+                    visible: (JamModel.jamModel.playingId < JamModel.jamModel.playlistCount-1 || JamModel.jamModel.repeat)  && JamModel.jamModel.playlistCount > 1
                     //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-next.svg"
