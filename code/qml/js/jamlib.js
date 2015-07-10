@@ -26,10 +26,39 @@ var jamModel = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; 
     property bool pause: false; \
     property bool hasNext: playingId != -1 && playingId != playlist.length-1
     property int playlistCount: jamModelIntern.playlist.length
+    property variant shuffle: []; \
+    property bool repeat: false; \
     onPlaylistChanged: { playingId = -1; if(playlist.length > 0) { playingId = 0; pause = false; } \ }
-    onPlayingIdChanged: if(playingId < 0) { stream.url = ""; } else if(playlist.length > 0) { stream = playlist[playingId]; } \
-    function nextTrack() { if(playingId != playlist.length-1) playingId++; }
-    function previousTrack() { if(playingId > 0) playingId--; }
+    onPlayingIdChanged: if(playingId < 0) { \
+                            stream.url = ""; \
+                        } else if(playlist.length > 0) { \
+                            var id = playingId; \
+                            if(jamModelIntern.playlistCount != 0 && jamModelIntern.shuffle.length == jamModelIntern.playlistCount){ \
+                                id = jamModelIntern.shuffle[playingId]; \
+                            } \
+                            stream = playlist[id]; \
+                        } \
+    function setShuffle() { \
+        var o = []; \
+        var i; \
+        for(i = 0; i < jamModelIntern.playlistCount; i++) o.push(i); \
+        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x); \
+        jamModelIntern.shuffle = o; \
+    } \
+    function nextTrack() \
+    { \
+        if(playingId != playlist.length-1) \
+            playingId++; \
+        else if(jamModelIntern.repeat) \
+            playingId = 0; \
+    } \
+    function previousTrack() \
+    { \
+        if(playingId > 0) \
+            playingId--; \
+        else if(jamModelIntern.repeat) \
+            playingId = playlist.length-1; \
+    } \
 }', Qt.application, 'JamModel');
 
 var jamPlaying = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; QtObject { \

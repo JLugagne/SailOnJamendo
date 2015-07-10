@@ -52,7 +52,7 @@ CoverBackground {
 
     CoverActionList {
         id: coverAction1
-        enabled: JamModel.jamModel.playlistCount != 0 && JamModel.jamModel.playlistCount-1 == JamModel.jamModel.playingId
+        enabled: JamModel.jamModel.playlistCount != 0 && JamModel.jamModel.playlistCount-1 == JamModel.jamModel.playingId && !JamModel.jamModel.repeat
 
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)

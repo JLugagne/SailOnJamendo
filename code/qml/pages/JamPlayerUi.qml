@@ -6,13 +6,6 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        PullDownMenu {
-            MenuItem {
-                text: qsTr("Player")
-                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
-
-            }
-        }
         width: parent.width
         contentHeight: column.height
         Column {
@@ -60,6 +53,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeHuge
                 color: Theme.primaryColor
+                width: parent.width-2*Theme.paddingMedium
             }
             Label {
                 id: album
@@ -68,6 +62,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeExtraLarge
                 color: Theme.secondaryColor
+                width: parent.width-2*Theme.paddingMedium
             }
             Label {
                 id: artist
@@ -76,13 +71,15 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeLarge
                 color: Theme.secondaryColor
+                width: parent.width-2*Theme.paddingMedium
             }
             Rectangle {
-                width: parent.width
+                width: parent.width/1.5
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: column.width/8
                 color: "transparent"
                 Image {
-                    //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
+                    visible: (JamModel.jamModel.playingId > 0 || JamModel.jamModel.repeat)
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-previous.svg"
                     width: parent.height
@@ -109,6 +106,7 @@ Page {
                 }
 
                 Image {
+                    visible: (JamModel.jamModel.playingId < JamModel.jamModel.playlistCount-1 || JamModel.jamModel.repeat)
                     //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-next.svg"
@@ -120,6 +118,34 @@ Page {
                         anchors.fill: parent
                         onClicked: JamModel.jamModel.nextTrack();
                     }
+                }
+            }
+            Rectangle {
+                width: parent.width/1.5
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: column.width/8
+                color: "transparent"
+                IconTextSwitch {
+                    icon.source: "image://theme/icon-l-shuffle"
+                    width: parent.height
+                    height: width
+                    anchors.right: parent.horizontalCenter
+                    anchors.rightMargin: Theme.paddingLarge
+                    onCheckedChanged: if(checked){
+                                          JamModel.jamModel.setShuffle();
+                                      }else{
+                                          JamModel.jamModel.shuffle = [];
+                                      }
+                }
+
+                IconTextSwitch {
+                    //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
+                    icon.source: "image://theme/icon-l-repeat"
+                    width: parent.height
+                    height: width
+                    anchors.left: parent.horizontalCenter
+                    anchors.leftMargin: Theme.paddingLarge
+                    onCheckedChanged: JamModel.jamModel.repeat = checked;
                 }
             }
         }
