@@ -34,6 +34,9 @@ ApplicationWindow
         visible: !network.isOnline
         color: "black"
         opacity: 0.6
+        MouseArea {
+            anchors.fill: parent
+        }
     }
     Text {
         anchors.fill: connectionRect
