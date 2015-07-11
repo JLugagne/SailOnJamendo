@@ -15,9 +15,10 @@ TARGET = harbour-sailonjamendo
 CONFIG += sailfishapp
 PKGCONFIG += sailfishapp
 
-QT += multimedia
+QT += multimedia network
 
-SOURCES += src/SailOnJamendo.cpp
+SOURCES += src/SailOnJamendo.cpp \
+    src/jamnetwork.cpp
 
 OTHER_FILES += \
     qml/harbour-sailonjamendo.qml \
@@ -58,5 +59,8 @@ INSTALLS += desktop icon
 # to disable building translations every time, comment out the
 # following CONFIG line
 #CONFIG += sailfishapp_i18n
+
+HEADERS += \
+    src/jamnetwork.h
 
 
