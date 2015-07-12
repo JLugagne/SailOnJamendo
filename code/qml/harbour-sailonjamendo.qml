@@ -41,7 +41,7 @@ ApplicationWindow
     Text {
         anchors.fill: connectionRect
         visible: !network.isOnline
-        text: "Your are not connected to internet.\nThis application can't work."
+        text: "You are not connected to internet.\nThis application can't work."
         wrapMode: Text.WordWrap
         font.pixelSize: Theme.fontSizeLarge
         color: Theme.primaryColor
