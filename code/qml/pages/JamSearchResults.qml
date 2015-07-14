@@ -1,26 +1,43 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "../js/jamlib.js" as JamModel
+import "delegates"
+import "models"
 
 Page {
-    id: page
-    property int oldCount: 0;
-    onStatusChanged: { if(oldCount != list.count) list.scrollToTop(); oldCount = list.count }
-    onEntered: list.scrollToTop()
+    property alias searchFor: model.searchFor
+    property alias searchIn: model.searchIn
+    property alias searchDone: model.searchDone
+
+    onSearchInChanged: {
+        var sIn = searchIn.toLowerCase();
+        if(sIn == "artists"){
+            list.delegate = artistsDelegate
+        }else if(sIn == "albums"){
+            list.delegate = albumsDelegate
+        }else if(sIn == "tracks"){
+            list.delegate = tracksDelegate
+        }
+    }
+
+    Component.onCompleted: { model.searchResults.clear(); model.doSearch(); }
+
+    JamModelSearch {
+        id: model
+    }
 
     Component {
         id: albumsDelegate
         JamDelegateAlbum {
-            imgSource: modelData.image
-            primaryDesc: modelData.name
-            secondaryDesc: modelData.artist_name
-            album_id: modelData.id
+            imgSource: _albumImage
+            primaryDesc: _albumName
+            secondaryDesc: _artistName
+            album_id: _albumId
             menu: ContextMenu {
                 MenuItem {
                     text: "Go to the artist"
                     onClicked: {
-                        JamModel.getArtist(modelData.artist_id);
+                        JamModel.getArtist(_artistId);
                         pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
                     }
                 }
@@ -30,33 +47,33 @@ Page {
     Component {
         id: artistsDelegate
         JamDelegateArtist {
-            name: modelData.name
-            image: modelData.image
-            artist_id: modelData.id
+            artistName: _artistName
+            artistImage: _artistImage
+            artistId: _artistId
         }
     }
     Component {
         id: tracksDelegate
         JamDelegateTrack {
-            trackName: modelData.name
-            trackDuration: modelData.duration
-            trackUrl: modelData.audio
-            albumImage: modelData.album_image
-            albumName: modelData.album_name
-            artistName: modelData.artist_name
-            albumId: modelData.album_id
+            trackName: _trackName
+            trackDuration: _trackDuration
+            trackUrl: _trackUrl
+            albumImage: _albumImage
+            albumName: _albumName
+            artistName: _artistName
+            albumId: _albumId
             menu: ContextMenu {
                 MenuItem {
                     text: "Go to the album"
                     onClicked: {
-                        JamModel.getAlbum(modelData.album_id);
+                        JamModel.getAlbum(albumId);
                         pageStack.push(Qt.resolvedUrl("JamAlbum.qml"));
                     }
                 }
                 MenuItem {
                     text: "Go to the artist"
                     onClicked: {
-                        JamModel.getArtist(modelData.artist_id);
+                        JamModel.getArtist(artistId);
                         pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
                     }
                 }
@@ -67,37 +84,33 @@ Page {
     SilicaListView {
         id: list
         anchors.fill: parent
-        model: JamModel.jamModel.search
-        header: PageHeader {
-            title: "Results : "+JamModel.jamModel.searchIn
-        }
-
-        PullDownMenu {
-            MenuItem {
-                enabled: JamModel.jamModel.playlistCount > 0
-                text: qsTr("Player")
-                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
-
-            }
-        }
         spacing: Theme.paddingSmall
+        header: PageHeader {
+            title: searchIn
+        }
+        model: model.searchResults
+
         PushUpMenu {
             MenuItem {
-                enabled: false
-                text: "Load more ..."
-                onClicked: JamModel.getSearchFor(searchFor.text, searchIn.currentItem.text, list.count);
+                text: "See more ..."
+                onClicked: doSearch()
             }
         }
 
-        delegate: (JamModel.jamModel.searchIn == "albums") ? albumsDelegate : (JamModel.jamModel.searchIn == "tracks") ? tracksDelegate :artistsDelegate
-        VerticalScrollDecorator {}
         BusyIndicator {
             id: busy
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: parent.count == 0
+            anchors.centerIn: parent
+            visible: !searchDone
             size: BusyIndicatorSize.Large
             running: visible
+        }
+
+        Text {
+            visible: searchDone && list.count == 0
+            font.pixelSize: Theme.fontSizeLarge
+            color: Theme.primaryColor
+            anchors.centerIn: parent
+            text: "No results found"
         }
     }
 }

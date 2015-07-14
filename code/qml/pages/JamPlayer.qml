@@ -15,21 +15,20 @@ Audio {
     }
     autoPlay: true
     autoLoad: true
-    source: JamModel.jamModel.stream.url
+    source: (JamModel.jamModel.playlist.tracks.count > 0 && JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._trackUrl : ""
 
-    onSourceChanged: JamDB.addAlbumToDB(JamModel.jamModel.stream.albumId, JamModel.jamModel.stream.album, JamModel.jamModel.stream.artist, JamModel.jamModel.stream.image);
+    onSourceChanged: if(JamModel.jamModel.playlist.currentTrack !== undefined)
+                         JamDB.addAlbumToDB(JamModel.jamModel.playlist.currentTrack._albumId, JamModel.jamModel.playlist.currentTrack._albumName, JamModel.jamModel.playlist.currentTrack._artistName, JamModel.jamModel.playlist.currentTrack._albumImage);
 
     onStatusChanged: {
         if(status == Audio.EndOfMedia)
-            JamModel.jamModel.nextTrack();
+            JamModel.jamModel.playlist.nextTrack();
     }
 
-    onDurationChanged: JamModel.jamPlaying.duration = duration/1000
-    onPositionChanged: JamModel.jamPlaying.position = position/1000
+    onPositionChanged: JamModel.jamModel.position = position/1000
     onBufferProgressChanged: {
-        JamModel.jamPlaying.buffering = parseInt(bufferProgress*100)
+        JamModel.jamModel.buffering = parseInt(bufferProgress*100)
     }
     onPaused: { isPlayingState = false; JamModel.jamModel.pause = true; }
     onPlaying: { isPlayingState = true; JamModel.jamModel.pause = false; }
-
 }

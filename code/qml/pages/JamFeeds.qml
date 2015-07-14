@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import "delegates"
+import "models"
 
 import "../js/jamlib.js" as JamModel
 import "../js/jamdb.js" as JamDB
@@ -17,15 +19,15 @@ Page {
         value: JamModel.jamModel.pause
         when: player.isPlayingState == JamModel.jamModel.pause
     }
-    onStatusChanged: if(status == PageStatus.Active) JamDB.updateAlbums();
-    onVisibleChanged: if(visible && list.count == 0) { JamModel.updateFeeds(); }
+
+    Component.onCompleted: JamDB.updateAlbums();
 
     SilicaListView {
         id: list
 
         PullDownMenu {
             MenuItem {
-                enabled: JamModel.jamModel.playlistCount > 0
+                enabled: JamModel.jamModel.playlist.tracks.count > 0
                 text: qsTr("Player")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
 
@@ -67,9 +69,23 @@ Page {
                 primaryDesc: modelData.albumTitle
                 secondaryDesc: modelData.albumArtist
                 album_id: modelData.albumId
+
+                JamModelAlbum {
+                    id: itemAlbum
+                    albumId: modelData.albumId
+                }
+
                 menu: ContextMenu {
                     id: ctxMenu
                     property int albumId
+                    MenuItem {
+                        text: "Play the album"
+                        onClicked: { itemAlbum.callback = itemAlbum.playAlbum; itemAlbum.getAlbum(); }
+                    }
+                    MenuItem {
+                        text: "Add album to queue"
+                        onClicked: { itemAlbum.callback = itemAlbum.addAlbumToQueue; itemAlbum.getAlbum(); }
+                    }
                     MenuItem {
                         text: "Forget it"
                         onClicked: { thisItem.remorseAction("Forget "+modelData.albumTitle, function() { JamDB.forgetAlbum(modelData.albumId); }) }

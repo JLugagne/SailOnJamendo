@@ -15,7 +15,7 @@ Page {
             width: parent.width
             PullDownMenu {
                 MenuItem {
-                    enabled: JamModel.jamModel.playlistCount > 0
+                    enabled: JamModel.jamModel.playlist.tracks.count > 0
                     text: qsTr("Player")
                     onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
 
@@ -26,7 +26,7 @@ Page {
                 title: "Search"
             }
 
-            TextField {
+            SearchField {
                 id: searchFor
                 width: parent.width
                 placeholderText: "Looking for"
@@ -47,8 +47,8 @@ Page {
                 text: "Search"
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
-                    JamModel.getSearchFor(searchFor.text, searchIn.currentItem.text.toLowerCase(), 0);
-                    pageStack.push(Qt.resolvedUrl("JamSearchResults.qml"))
+                    //JamModel.getSearchFor(searchFor.text, searchIn.currentItem.text.toLowerCase(), 0);
+                    pageStack.push(Qt.resolvedUrl("JamSearchResults.qml"), {"searchFor": searchFor.text, "searchIn": searchIn.currentItem.text.toLowerCase()})
                 }
             }
         }

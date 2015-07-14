@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "../js/jamlib.js" as JamModel
+import "../../js/jamlib.js" as JamModel
 
 ListItem {
     id: item
@@ -10,10 +10,11 @@ ListItem {
     property string secondaryDesc
     property int album_id
 
-    width: list.width
+    width: parent.width
     contentHeight: 90
     Image {
         id: img
+        x: 5
         width: 90
         height: 90
         source: item.imgSource
@@ -35,9 +36,5 @@ ListItem {
         font.pixelSize: Theme.fontSizeExtraSmall
         text: item.secondaryDesc
     }
-    onClicked: { JamModel.getAlbum(item.album_id); pageStack.push(Qt.resolvedUrl("JamAlbum.qml")) }
-    /*MouseArea {
-        anchors.fill: parent
-        onClicked: { JamModel.getAlbum(item.album_id); pageStack.push(Qt.resolvedUrl("JamAlbum.qml")) }
-    }*/
+    onClicked: { pageStack.push(Qt.resolvedUrl("../JamAlbum.qml"), {"albumId": item.album_id}) }
 }

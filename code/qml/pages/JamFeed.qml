@@ -8,7 +8,7 @@ Page {
         anchors.fill: parent
         PullDownMenu {
             MenuItem {
-                enabled: JamModel.jamModel.playlistCount > 0
+                enabled: JamModel.jamModel.playlist.tracks.count > 0
                 text: qsTr("Player")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
 

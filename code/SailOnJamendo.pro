@@ -27,10 +27,9 @@ OTHER_FILES += \
     qml/pages/JamSearch.qml \
     qml/pages/JamAlbum.qml \
     qml/pages/JamArtist.qml \
-    qml/pages/JamSearchResults.qml \
-    qml/pages/JamDelegateArtist.qml \
-    qml/pages/JamDelegateAlbum.qml \
-    qml/pages/JamDelegateTrack.qml \
+    qml/pages/delegates/JamDelegateArtist.qml \
+    qml/pages/delegates/JamDelegateAlbum.qml \
+    qml/pages/delegates/JamDelegateTrack.qml \
     qml/pages/JamFeeds.qml \
     qml/pages/JamFeed.qml \
     qml/pages/JamPlayerUi.qml \
@@ -49,7 +48,15 @@ OTHER_FILES += \
     rpm/harbour-sailonjamendo.changes \
     qml/js/jamdb.js \
     qml/pages/JamAbout.qml \
-    qml/pages/JamSettings.qml
+    qml/pages/JamSettings.qml \
+    qml/pages/JamPlaylist.qml \
+    qml/pages/JamSearchResults.qml \
+    qml/pages/delegates/JamDelegateRadio.qml \
+    qml/pages/models/JamModelPlaylist.qml \
+    qml/pages/models/JamModelRadio.qml \
+    qml/pages/models/JamModelSearch.qml \
+    qml/pages/models/JamModelArtist.qml \
+    qml/pages/models/JamModelAlbum.qml
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

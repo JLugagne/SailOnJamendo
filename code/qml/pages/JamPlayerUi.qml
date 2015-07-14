@@ -8,6 +8,13 @@ Page {
         anchors.fill: parent
         width: parent.width
         contentHeight: column.height
+        PullDownMenu {
+            MenuItem {
+                text: "View queue"
+                onClicked: pageStack.push(Qt.resolvedUrl("JamPlaylist.qml"));
+            }
+        }
+
         Column {
             id: column
             width: parent.width
@@ -20,14 +27,14 @@ Page {
             Image {
                 id:img
                 fillMode: Image.PreserveAspectFit
-                source: JamModel.jamModel.stream.image
+                source: (JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._albumImage : "../images/icon.svg"
                 width: parent.width*0.8
                 height: width
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Rectangle {
                     id: rect
-                    visible: JamModel.jamModel.playlistCount > 0
+                    visible: JamModel.jamModel.playlist.tracks.count > 0
                     color: "black"
                     opacity: 0.7
                     anchors.bottom: parent.bottom
@@ -38,7 +45,8 @@ Page {
                 }
 
                 Label {
-                    text: (JamModel.jamPlaying.buffering != 100) ? "Buffering ("+JamModel.jamPlaying.buffering+"%)":  JamModel.timeToString(JamModel.jamPlaying.position)+"/"+JamModel.timeToString(JamModel.jamModel.stream.duration)
+                    visible: (JamModel.jamModel.playlist.currentTrack !== undefined)
+                    text: (JamModel.jamModel.buffering != 100) ? "Buffering ("+JamModel.jamModel.buffering+"%)" : JamModel.timeToString(JamModel.jamModel.position)+"/"+JamModel.timeToString(JamModel.jamModel.playlist.currentTrack._trackDuration)
                     anchors.horizontalCenter: rect.horizontalCenter
                     anchors.verticalCenter: rect.verticalCenter
                     font.pixelSize: 25
@@ -48,8 +56,8 @@ Page {
 
             Label {
                 id: track
-                visible: JamModel.jamModel.playlistCount > 0
-                text: JamModel.jamModel.stream.name
+                visible: (JamModel.jamModel.playlist.currentTrack !== undefined)
+                text: JamModel.jamModel.playlist.currentTrack._trackName
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeHuge
                 color: Theme.primaryColor
@@ -57,8 +65,8 @@ Page {
             }
             Label {
                 id: album
-                visible: JamModel.jamModel.playlistCount > 0
-                text: JamModel.jamModel.stream.album
+                visible: (JamModel.jamModel.playlist.currentTrack !== undefined)
+                text: JamModel.jamModel.playlist.currentTrack._albumName
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeExtraLarge
                 color: Theme.secondaryColor
@@ -66,8 +74,8 @@ Page {
             }
             Label {
                 id: artist
-                visible: JamModel.jamModel.playlistCount > 0
-                text: JamModel.jamModel.stream.artist
+                visible: (JamModel.jamModel.playlist.currentTrack !== undefined)
+                text: JamModel.jamModel.playlist.currentTrack._artistName
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeLarge
                 color: Theme.secondaryColor
@@ -79,7 +87,7 @@ Page {
                 height: column.width/8
                 color: "transparent"
                 Image {
-                    visible: (JamModel.jamModel.playingId > 0 || JamModel.jamModel.repeat) && JamModel.jamModel.playlistCount > 1
+                    visible: JamModel.jamModel.playlist.hasPreviousTrack()
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-previous.svg"
                     width: parent.height
@@ -88,7 +96,7 @@ Page {
                     anchors.leftMargin: Theme.paddingLarge
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: JamModel.jamModel.previousTrack();
+                        onClicked: JamModel.jamModel.playlist.previousTrack();
                     }
                 }
 
@@ -106,7 +114,7 @@ Page {
                 }
 
                 Image {
-                    visible: (JamModel.jamModel.playingId < JamModel.jamModel.playlistCount-1 || JamModel.jamModel.repeat)  && JamModel.jamModel.playlistCount > 1
+                    visible: JamModel.jamModel.playlist.hasNextTrack()
                     //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
                     fillMode: Image.PreserveAspectFit
                     source: "../images/icon-m-toolbar-mediacontrol-next.svg"
@@ -116,7 +124,7 @@ Page {
                     anchors.rightMargin: Theme.paddingLarge
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: JamModel.jamModel.nextTrack();
+                        onClicked: JamModel.jamModel.playlist.nextTrack();
                     }
                 }
             }
@@ -131,11 +139,7 @@ Page {
                     height: width
                     anchors.right: parent.horizontalCenter
                     anchors.rightMargin: Theme.paddingLarge
-                    onCheckedChanged: if(checked){
-                                          JamModel.jamModel.setShuffle();
-                                      }else{
-                                          JamModel.jamModel.shuffle = [];
-                                      }
+                    onCheckedChanged: JamModel.jamModel.playlist.bShuffle = checked;
                 }
 
                 IconTextSwitch {
@@ -145,7 +149,7 @@ Page {
                     height: width
                     anchors.left: parent.horizontalCenter
                     anchors.leftMargin: Theme.paddingLarge
-                    onCheckedChanged: JamModel.jamModel.repeat = checked;
+                    onCheckedChanged: JamModel.jamModel.playlist.bRepeat = checked;
                 }
             }
         }

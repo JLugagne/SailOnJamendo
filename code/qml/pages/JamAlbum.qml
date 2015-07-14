@@ -3,16 +3,30 @@ import Sailfish.Silica 1.0
 
 import "../js/jamlib.js" as JamModel
 
+import "delegates"
+import "models"
+
 Page {
     id: page
+    property alias albumId: albModel.albumId
+
     onStatusChanged: column.scrollToTop();
+
+    Component.onCompleted: albModel.getAlbum();
+
+    JamModelAlbum {
+        id: albModel
+    }
 
     SilicaListView {
         id: column
         anchors.fill: parent
+
+        model: albModel.tracks
+
         PullDownMenu {
             MenuItem {
-                enabled: JamModel.jamModel.playlistCount > 0
+                enabled: JamModel.jamModel.playlist.tracks.count > 0
                 text: qsTr("Player")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
 
@@ -20,45 +34,30 @@ Page {
             MenuItem {
                 text: qsTr("Go to artist")
                 onClicked: {
-                    JamModel.getArtist(JamModel.jamModel.album.artist_id)
-                    pageStack.push(Qt.resolvedUrl("JamArtist.qml"))
+                    pageStack.push(Qt.resolvedUrl("JamArtist.qml"),{"artistId": albModel.artistId});
                 }
             }
             MenuItem {
+                text: "Add the album to queue"
+                onClicked: albModel.addAlbumToQueue()
+            }
+            MenuItem {
                 text: "Play the album"
-                onClicked: {
-                    var pl = new Array();
-                    var i = 0;
-                    for(i = 0; i < JamModel.jamModel.album.tracks.length; i++){
-                        pl.push({
-                                    "url":JamModel.jamModel.album.tracks[i].audio,
-                                    "albumId":JamModel.jamModel.album.id,
-                                    "image":JamModel.jamModel.album.image,
-                                    "artist":JamModel.jamModel.album.artist_name,
-                                    "name":JamModel.jamModel.album.tracks[i].name,
-                                    "album":JamModel.jamModel.album.name,
-                                    "duration":JamModel.jamModel.album.tracks[i].duration
-                                });
-                    }
-                    JamModel.jamPlaying.image = JamModel.jamModel.album.image
-                    JamModel.jamPlaying.artist = JamModel.jamModel.album.artist_name
-                    JamModel.jamPlaying.album = JamModel.jamModel.album.name
-                    JamModel.jamModel.playlist = pl;
-                }
+                onClicked: albModel.playAlbum()
             }
         }
         header: Column {
                 width: page.width
                 PageHeader {
-                    title: "Album"
+                    title: albModel.albumName
                 }
                 Label {
-                    text: JamModel.jamModel.album.artist_name
+                    text: albModel.artistName
                     font.pixelSize: Theme.fontSizeLarge
                     color: Theme.primaryColor
                 }
                 Label {
-                    text: JamModel.jamModel.album.name
+                    text: albModel.albumName
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.primaryColor
                 }
@@ -66,39 +65,29 @@ Page {
                     width: parent.width*0.75
                     asynchronous: true
                     anchors.horizontalCenter: parent.horizontalCenter
-                    source: JamModel.jamModel.album.image
+                    source: albModel.albumImage
                     onSourceSizeChanged: if(status == Image.Ready) { height = sourceSize.height*(width/sourceSize.width); }
                 }
             }
 
-        model: JamModel.jamModel.album.tracks
         delegate: JamDelegateTrack {
             anchors.margins: Theme.paddingMedium
-            trackDuration: modelData.duration
-            trackName: modelData.name
-            trackUrl: modelData.audio
-            albumImage: JamModel.jamModel.album.image
-            albumName: JamModel.jamModel.album.name
-            albumId: JamModel.jamModel.album.id
-            artistName: JamModel.jamModel.album.artist_name
+            trackDuration: _trackDuration
+            trackName: _trackName
+            trackUrl: _trackUrl
+            albumImage: albModel.albumImage
+            albumName: albModel.albumName
+            albumId: albModel.albumId
+            artistName: albModel.artistName
         }
 
         BusyIndicator {
             id: busy
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: parent.count == 0
+            visible: !albModel.loaded
             size: BusyIndicatorSize.Large
             running: visible
         }
-
-        /*ListItem {
-            Label {
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                text: "("+JamModel.timeToString(JamModel.jamModel.album.tracks[index].duration)+") "+JamModel.jamModel.album.tracks[index].name
-            }
-
-        }*/
     }
 }

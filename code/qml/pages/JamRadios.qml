@@ -1,72 +1,38 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtMultimedia 5.0
-import "../js/jamlib.js" as JamModel
+
+import "delegates"
+import "models"
 
 Page {
     id: page
-    SilicaFlickable {
-        onVisibleChanged: if(visible) JamModel.updateListRadios()
+
+    Component.onCompleted: radioModel.getRadios()
+
+    JamModelRadio {
+        id: radioModel
+    }
+
+    SilicaGridView {
+        id: grid
+        header: PageHeader {
+            title: "Radios"
+        }
         anchors.fill: parent
+        model: radioModel.radios
 
-        SilicaGridView {
-            id: grid
-            header: PageHeader {
-                title: "Radios"
-            }
-            VerticalScrollDecorator {}
-            anchors.fill: parent
-            VerticalScrollDecorator {}
-            model: JamModel.jamModel.radios
+        delegate: JamDelegateRadio {
+            radioName: _radioName
+            radioStream: _radioStream
+            radioImage: _radioImage
+        }
 
-            delegate: BackgroundItem {
-                width: img.width
-                height: img.height
-                Image {
-                    id: img
-                    width: page.width/3
-                    asynchronous: true
-                    fillMode: Image.PreserveAspectFit
-                    source: modelData.image
-                    onSourceSizeChanged: if(status == Image.Ready && (grid.cellHeight != height || grid.cellWidth != width)) { height = sourceSize.height*(width/sourceSize.width); grid.cellHeight = height; grid.cellWidth = width; }
-                    Rectangle {
-                        id: rect
-                        color: "black"
-                        opacity: 0.7
-                        anchors.bottom: parent.bottom
-                        height: 25
-                        width: parent.width
-                    }
-
-                    Label {
-                        x: Theme.paddingLarge
-                        text: modelData.dispname
-                        anchors.horizontalCenter: rect.horizontalCenter
-                        anchors.verticalCenter: rect.verticalCenter
-                        font.bold: true
-                        font.pixelSize: 20
-                        color: "white"
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            JamModel.jamPlaying.image = modelData.image
-                            JamModel.jamPlaying.album = modelData.dispname
-                            JamModel.jamPlaying.artist = "Radio"
-                            JamModel.updatePlayRadio(modelData.name)
-                        }
-                    }
-
-                    Image {
-                        visible: JamModel.jamPlaying.image == modelData.image
-                        source: "image://theme/icon-cover-play"
-                        anchors.centerIn: parent
-                        width: parent.width/2
-                        height: parent.height/2
-                    }
-                }
-            }
+        BusyIndicator {
+            id: busy
+            anchors.centerIn: parent
+            visible: !radioModel.loaded
+            size: BusyIndicatorSize.Large
+            running: visible
         }
     }
 }

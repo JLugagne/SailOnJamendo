@@ -4,21 +4,23 @@ var JamDatabase;
 
 function updateAlbums()
 {
-    JamDatabase.transaction(
-            function(tx) {
-                var rs = tx.executeSql("SELECT * FROM album ORDER BY lastPlayed DESC");
-                if(rs.rows.length > 0){
-                    var albums = new Array();
-                    var i = 0;
-                    for(i = 0; i < rs.rows.length; i++) {
-                        albums.push(rs.rows.item(i));
-                    }
-                    jamDB.lastAlbum = albums;
-                }else{
-                    jamDB.lastAlbum = [{"albumTitle": "The list is empty"}];
+    if(JamDatabase !== undefined)
+        JamDatabase.transaction(
+                function(tx) {
+                    var rs = tx.executeSql("SELECT * FROM album ORDER BY lastPlayed DESC");
+                    if(tx !== undefined)
+                        if(rs.rows.length > 0){
+                            var albums = new Array();
+                            var i = 0;
+                            for(i = 0; i < rs.rows.length; i++) {
+                                albums.push(rs.rows.item(i));
+                            }
+                            jamDB.lastAlbum = albums;
+                        }else{
+                            jamDB.lastAlbum = [{"albumTitle": "The list is empty"}];
+                        }
                 }
-            }
-    );
+        );
 }
 
 function forgetAlbum(albumId)
@@ -33,7 +35,7 @@ function forgetAlbum(albumId)
 
 function addAlbumToDB(albumId, albumTitle, albumArtist, albumImage)
 {
-    if(albumTitle == "" || (albumTitle == "radios" && albumArtist == "radios")) return;
+    if(albumId == -1 || albumTitle == "" || (albumTitle == "radios" && albumArtist == "radios")) return;
     JamDatabase.transaction(
             function(tx) {
                 var rs = tx.executeSql("SELECT * FROM album WHERE albumId = ?", [albumId]);

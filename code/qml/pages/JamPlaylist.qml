@@ -1,9 +1,10 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "../js/jamlib.js" as JamModel
 import "delegates"
 import "models"
+
+import "../js/jamlib.js" as JamModel
 
 Page {
     id: page
@@ -20,35 +21,24 @@ Page {
         anchors.fill: parent
         clip: true
         header: PageHeader {
-                title: model.artistName
+                title: "Queue"
             }
-        PullDownMenu {
-            MenuItem {
-                enabled: JamModel.jamModel.playlist.tracks.count > 0
-                text: qsTr("Player")
-                onClicked: pageStack.push(Qt.resolvedUrl("JamPlayerUi.qml"))
 
-            }
-            MenuItem {
-                text: "Add all tracks to queue"
-                onClicked: model.addAllToQueue()
-            }
-            MenuItem {
-                text: "Play all tracks"
-                onClicked: model.playAll()
-            }
-        }
-
-        model: model.tracks
+        model: JamModel.jamModel.playlist.tracks
 
         section.property: "_albumId"
         section.delegate: JamDelegateAlbum {
                 id: header
-                property variant it: model.getAlbumById(section)
-                imgSource: it._albumImage
-                primaryDesc: it._albumName
-                secondaryDesc: it._albumReleaseDate
-                album_id: it._albumId
+                JamModelAlbum {
+                    id: alb
+                    albumId: section
+                }
+                Component.onCompleted: alb.getAlbum()
+
+                imgSource: alb.albumImage
+                primaryDesc: alb.albumName
+                secondaryDesc: alb.artistName
+                album_id: alb.albumId
             }
 
         delegate: JamDelegateTrack {

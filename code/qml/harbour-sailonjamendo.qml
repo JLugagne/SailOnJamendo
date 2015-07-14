@@ -7,6 +7,7 @@ import SailOnJamendo 1.0
 import "pages"
 
 import "js/jamdb.js" as JamDB
+import "js/jamlib.js" as JamModel
 
 ApplicationWindow
 {

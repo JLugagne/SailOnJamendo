@@ -6,7 +6,7 @@ CoverBackground {
     Image {
         id:img
         fillMode: Image.PreserveAspectCrop
-        source: JamModel.jamModel.stream.image
+        source: (JamModel.jamModel.playlist.tracks.count > 0 && JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._albumImage : "../images/icon.svg";
         width: parent.width*0.85
         height: parent.width*0.85
         y: 10
@@ -25,34 +25,35 @@ CoverBackground {
         }
 
         Label {
-            visible: JamModel.jamModel.playlistCount > 0
-            text: (JamModel.jamPlaying.buffering != 100) ? "Buffering ("+JamModel.jamPlaying.buffering+"%)":  JamModel.timeToString(JamModel.jamPlaying.position)+"/"+JamModel.timeToString(JamModel.jamModel.stream.duration)
+            visible: JamModel.jamModel.playlist.currentTrack !== undefined && JamModel.jamModel.playlist.tracks.count > 0
+            text: (JamModel.jamModel.buffering != 100) ? "Buffering ("+JamModel.jamModel.buffering+"%)" : JamModel.timeToString(JamModel.jamModel.position)+"/"+JamModel.timeToString(JamModel.jamModel.playlist.currentTrack._trackDuration)
             anchors.horizontalCenter: rect.horizontalCenter
             anchors.verticalCenter: rect.verticalCenter
             font.pixelSize: 25
             color: "white"
         }
     }
+
     Label {
         id: artist
-        visible: JamModel.jamModel.playlistCount > 0
+        visible: JamModel.jamModel.playlist.tracks.count > 0
         anchors.top: img.bottom
-        text: JamModel.jamModel.stream.name
+        text: (JamModel.jamModel.playlist.tracks.count > 0 && JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._trackName : ""
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 30
     }
     Label {
         id: album
-        visible: JamModel.jamModel.playlistCount > 0
+        visible: JamModel.jamModel.playlist.tracks.count > 0
         anchors.top: artist.bottom
-        text: JamModel.jamModel.stream.artist
+        text: (JamModel.jamModel.playlist.tracks.count > 0 && JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._artistName : ""
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 25
     }
 
     CoverActionList {
         id: coverAction1
-        enabled: JamModel.jamModel.playlistCount != 0 && JamModel.jamModel.playlistCount-1 == JamModel.jamModel.playingId && (!JamModel.jamModel.repeat || JamModel.jamModel.playlistCount == 1)
+        enabled: !JamModel.jamModel.playlist.hasNextTrack()
 
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
@@ -63,7 +64,7 @@ CoverBackground {
 
     CoverActionList {
         id: coverAction2
-        enabled: JamModel.jamModel.playlistCount > 1 && !coverAction1.enabled
+        enabled: !coverAction1.enabled
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
             iconSource: (JamModel.jamModel.pause) ? "image://theme/icon-cover-play" : "image://theme/icon-cover-pause"
@@ -73,7 +74,7 @@ CoverBackground {
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
             iconSource: "../images/icon-m-toolbar-mediacontrol-next.svg"
-            onTriggered: JamModel.jamModel.nextTrack();
+            onTriggered: JamModel.jamModel.playlist.nextTrack();
         }
     }
 }
