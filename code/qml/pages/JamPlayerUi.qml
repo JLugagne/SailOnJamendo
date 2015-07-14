@@ -53,7 +53,6 @@ Page {
                     color: "white"
                 }
             }
-
             Label {
                 id: track
                 visible: (JamModel.jamModel.playlist.currentTrack !== undefined)
@@ -133,7 +132,9 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: column.width/8
                 color: "transparent"
+
                 IconTextSwitch {
+                    id: btnShuffle
                     icon.source: "image://theme/icon-l-shuffle"
                     width: parent.height
                     height: width
@@ -143,6 +144,7 @@ Page {
                 }
 
                 IconTextSwitch {
+                    id: btnRepease
                     //visible: (JamModel.jamPlaying.playingId != -1 && JamModel.jamPlaying.playingId-1 != JamModel.jamPlaying.playlist.length)
                     icon.source: "image://theme/icon-l-repeat"
                     width: parent.height
@@ -150,6 +152,18 @@ Page {
                     anchors.left: parent.horizontalCenter
                     anchors.leftMargin: Theme.paddingLarge
                     onCheckedChanged: JamModel.jamModel.playlist.bRepeat = checked;
+                }
+
+                Binding {
+                    target: btnShuffle
+                    property: "checked"
+                    value: JamModel.jamModel.playlist.bShuffle
+                }
+
+                Binding {
+                    target: btnRepease
+                    property: "checked"
+                    value: JamModel.jamModel.playlist.bRepeat
                 }
             }
         }

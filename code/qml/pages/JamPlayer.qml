@@ -17,12 +17,13 @@ Audio {
     autoLoad: true
     source: (JamModel.jamModel.playlist.tracks.count > 0 && JamModel.jamModel.playlist.currentTrack !== undefined) ? JamModel.jamModel.playlist.currentTrack._trackUrl : ""
 
-    onSourceChanged: if(JamModel.jamModel.playlist.currentTrack !== undefined)
-                         JamDB.addAlbumToDB(JamModel.jamModel.playlist.currentTrack._albumId, JamModel.jamModel.playlist.currentTrack._albumName, JamModel.jamModel.playlist.currentTrack._artistName, JamModel.jamModel.playlist.currentTrack._albumImage);
+//    onSourceChanged: if(JamModel.jamModel.playlist.currentTrack !== undefined)
+//                         JamDB.addAlbumToDB(JamModel.jamModel.playlist.currentTrack._albumId, JamModel.jamModel.playlist.currentTrack._albumName, JamModel.jamModel.playlist.currentTrack._artistName, JamModel.jamModel.playlist.currentTrack._albumImage);
 
     onStatusChanged: {
-        if(status == Audio.EndOfMedia)
+        if((status == Audio.EndOfMedia || status == Audio.InvalidMedia) && JamModel.jamModel.playlist.hasNextTrack()){
             JamModel.jamModel.playlist.nextTrack();
+        }
     }
 
     onPositionChanged: JamModel.jamModel.position = position/1000

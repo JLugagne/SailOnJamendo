@@ -31,10 +31,12 @@ Page {
             }
             MenuItem {
                 text: "Add all tracks to queue"
+                enabled: model.tracksLoaded
                 onClicked: model.addAllToQueue()
             }
             MenuItem {
                 text: "Play all tracks"
+                enabled: model.tracksLoaded
                 onClicked: model.playAll()
             }
         }

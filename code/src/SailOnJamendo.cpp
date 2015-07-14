@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     //
     // To display the view, call "show()" (will show fullscreen on device).
 
-    qmlRegisterType<JamNetwork>("SailOnJamendo",1,0,"JamNetwork");
+    qmlRegisterType<JamNetwork>("harbour.sailonjamendo",1,0,"JamNetwork");
 
     return SailfishApp::main(argc, argv);
 }

@@ -14,7 +14,7 @@ CoverBackground {
 
         Rectangle {
             id: rect
-            visible: JamModel.jamModel.playlistCount > 0
+            visible: JamModel.jamModel.playlist.currentTrack !== undefined && JamModel.jamModel.playlist.tracks.count > 0
             color: "black"
             opacity: 0.7
             anchors.bottom: parent.bottom
@@ -42,6 +42,7 @@ CoverBackground {
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 30
     }
+
     Label {
         id: album
         visible: JamModel.jamModel.playlist.tracks.count > 0
@@ -53,7 +54,7 @@ CoverBackground {
 
     CoverActionList {
         id: coverAction1
-        enabled: !JamModel.jamModel.playlist.hasNextTrack()
+        enabled: !JamModel.jamModel.playlist.hasNextTrack() && JamModel.jamModel.playlist.currentTrack !== undefined
 
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
@@ -64,7 +65,7 @@ CoverBackground {
 
     CoverActionList {
         id: coverAction2
-        enabled: !coverAction1.enabled
+        enabled: !coverAction1.enabled && JamModel.jamModel.playlist.currentTrack !== undefined
         CoverAction {
             //visible: (JamModel.jamPlaying.playingId != -1)
             iconSource: (JamModel.jamModel.pause) ? "image://theme/icon-cover-play" : "image://theme/icon-cover-pause"

@@ -45,7 +45,6 @@ Item {
 
     function parseResults(data)
     {
-        console.log(data)
         var res = JSON.parse(data);
         var results = res["results"];
         var sIn = searchIn.toLowerCase();

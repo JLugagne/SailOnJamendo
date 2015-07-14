@@ -33,16 +33,19 @@ Page {
             }
             MenuItem {
                 text: qsTr("Go to artist")
+                enabled: albModel.loaded
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("JamArtist.qml"),{"artistId": albModel.artistId});
                 }
             }
             MenuItem {
                 text: "Add the album to queue"
+                enabled: albModel.loaded
                 onClicked: albModel.addAlbumToQueue()
             }
             MenuItem {
                 text: "Play the album"
+                enabled: albModel.loaded
                 onClicked: albModel.playAlbum()
             }
         }

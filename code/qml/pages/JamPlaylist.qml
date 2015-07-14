@@ -50,6 +50,13 @@ Page {
                     albumName: _albumName
                     artistName: _artistName
                     albumId: _albumId
+
+                    menu: ContextMenu {
+                        MenuItem {
+                            text: "Remove from playlist"
+                            onClicked: track.remorseAction("Removing ...", function() { JamModel.jamModel.playlist.removeUrl(_trackUrl); });
+                        }
+                    }
                 }
 
         BusyIndicator {

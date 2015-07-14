@@ -11,6 +11,7 @@ Page {
     id: page
     JamPlayer {
         id: player
+        onSourceChanged: lastPlayedAlbums.trackChanged()
     }
 
     Binding {
@@ -20,7 +21,10 @@ Page {
         when: player.isPlayingState == JamModel.jamModel.pause
     }
 
-    Component.onCompleted: JamDB.updateAlbums();
+    Component.onCompleted: lastPlayedAlbums.update()
+    JamModelLastPlayed {
+        id: lastPlayedAlbums
+    }
 
     SilicaListView {
         id: list
@@ -43,10 +47,16 @@ Page {
         }
         PushUpMenu {
             MenuItem {
+                text: qsTr("Clear all")
+                enabled: lastPlayedAlbums.albums.count
+                onClicked: lastPlayedAlbums.clearAll();
+
+            }
+            /*MenuItem {
                 text: qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamSettings.qml"))
 
-            }
+            }*/
             MenuItem {
                 text: qsTr("About")
                 onClicked: pageStack.push(Qt.resolvedUrl("JamAbout.qml"))
@@ -60,19 +70,19 @@ Page {
             title: qsTr("Last played")
         }
 
-        model: JamDB.jamDB.lastAlbum
+        model: lastPlayedAlbums.albums
 
         delegate: JamDelegateAlbum {
                 id: thisItem
                 ListView.onRemove: animateRemoval(thisItem)
-                imgSource: modelData.albumImage
-                primaryDesc: modelData.albumTitle
-                secondaryDesc: modelData.albumArtist
-                album_id: modelData.albumId
+                imgSource: albumImage
+                primaryDesc: albumTitle
+                secondaryDesc: albumArtist
+                album_id: albumId
 
                 JamModelAlbum {
                     id: itemAlbum
-                    albumId: modelData.albumId
+                    albumId: thisItem.album_id
                 }
 
                 menu: ContextMenu {
@@ -88,7 +98,7 @@ Page {
                     }
                     MenuItem {
                         text: "Forget it"
-                        onClicked: { thisItem.remorseAction("Forget "+modelData.albumTitle, function() { JamDB.forgetAlbum(modelData.albumId); }) }
+                        onClicked: { thisItem.remorseAction("Forget "+albumTitle, function() { lastPlayedAlbums.forgetAlbum(albumId); }) }
                     }
                 }
             }
@@ -98,9 +108,16 @@ Page {
             id: busy
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: parent.count == 0
+            visible: !lastPlayedAlbums.albumsUpdated
             size: BusyIndicatorSize.Large
             running: visible
+        }
+        Text {
+            visible: lastPlayedAlbums.albumsUpdated && list.count == 0
+            font.pixelSize: Theme.fontSizeLarge
+            color: Theme.primaryColor
+            anchors.centerIn: parent
+            text: "Nothing to show"
         }
     }
 }

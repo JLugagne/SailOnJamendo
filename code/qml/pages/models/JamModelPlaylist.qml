@@ -48,17 +48,23 @@ Item {
 
     function nextTrack()
     {
-        var nextId = Math.min(currentTrackId+1,_tracks.count-1);
-        if(bRepeat && nextId == _tracks.count-1)
-            nextId = 0;
+        var nextId = currentTrackId+1;
+        if(nextId == _tracks.count)
+            if(bRepeat)
+                nextId = 0;
+            else
+                nextId = nextId - 1;
         currentTrackId = nextId;
     }
 
     function previousTrack()
     {
-        var prevId = Math.max(currentTrackId-1, 0);
-        if(bRepeat && prevId == 0)
-            prevId = _tracks.count-1;
+        var prevId = currentTrackId-1;
+        if(prevId < 0)
+            if(bRepeat)
+                prevId = _tracks.count-1;
+            else
+                prevId = 0;
         currentTrackId = prevId;
     }
 
@@ -89,5 +95,18 @@ Item {
             if(_tracks.get(i)._trackUrl == url) return true;
         }
         return false;
+    }
+
+    function removeUrl(url)
+    {
+        var i = 0;
+        for(i = 0; i < _tracks.count; i++){
+            if(_tracks.get(i)._trackUrl == url){
+                _tracks.remove(i);
+                break;
+            }
+        }
+        bShuffle = !bShuffle;
+        bShuffle = !bShuffle;
     }
 }

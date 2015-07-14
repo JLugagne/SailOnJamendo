@@ -56,7 +56,8 @@ OTHER_FILES += \
     qml/pages/models/JamModelRadio.qml \
     qml/pages/models/JamModelSearch.qml \
     qml/pages/models/JamModelArtist.qml \
-    qml/pages/models/JamModelAlbum.qml
+    qml/pages/models/JamModelAlbum.qml \
+    qml/pages/models/JamModelLastPlayed.qml
 
 icon.files = $${TARGET}.png
 icon.path = /usr/share/icons/hicolor/86x86/apps

@@ -4,6 +4,7 @@ import Sailfish.Silica 1.0
 import "../../js/jamlib.js" as JamModel
 
 Item {
+    id: item
     property int albumId
     property string albumName
     property string albumImage
@@ -54,11 +55,11 @@ Item {
             var tr = tracks.get(i);
             pl.push({
                         "_trackUrl": tr._trackUrl,
-                        "_albumImage": albumImage,
-                        "_artistName": artistName,
+                        "_albumImage": item.albumImage,
+                        "_artistName": item.artistName,
                         "_trackName": tr._trackName,
-                        "_albumName": albumName,
-                        "_albumId": albumId,
+                        "_albumName": item.albumName,
+                        "_albumId": item.albumId,
                         "_trackDuration": tr._trackDuration
                     });
         }
