@@ -13,14 +13,27 @@ Item {
 
     ListModel {
         id: _tracks
+
+        onCountChanged: {
+            if(currentTrack !== undefined){
+                var i = 0;
+                for(i = 0; i < _tracks.count; i++){
+                    if(currentTrack._trackUrl == _tracks.get(i)._trackUrl){
+                        currentTrackId = i;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     onCurrentTrackIdChanged: {
                                  if(currentTrackId >= 0){
                                      var id = currentTrackId;
                                      if(bShuffle)
-                                         id = shuffle[id]
-                                     currentTrack = _tracks.get(id);
+                                         id = shuffle[id];
+                                     if(currentTrack === undefined || currentTrack._trackUrl != _tracks.get(id)._trackUrl)
+                                        currentTrack = _tracks.get(id);
                                  }
                              }
 
