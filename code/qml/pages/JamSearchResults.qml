@@ -4,6 +4,8 @@ import Sailfish.Silica 1.0
 import "delegates"
 import "models"
 
+import "../js/jamlib.js" as JamModel
+
 Page {
     property alias searchFor: model.searchFor
     property alias searchIn: model.searchIn
@@ -37,8 +39,7 @@ Page {
                 MenuItem {
                     text: "Go to the artist"
                     onClicked: {
-                        JamModel.getArtist(_artistId);
-                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
+                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"), {"artistId": _artistId});
                     }
                 }
             }
@@ -55,6 +56,7 @@ Page {
     Component {
         id: tracksDelegate
         JamDelegateTrack {
+            id: item
             trackName: _trackName
             trackDuration: _trackDuration
             trackUrl: _trackUrl
@@ -62,19 +64,19 @@ Page {
             albumName: _albumName
             artistName: _artistName
             albumId: _albumId
+            property int artistId: _artistId
             menu: ContextMenu {
                 MenuItem {
                     text: "Go to the album"
+                    enabled: item.albumId != 0
                     onClicked: {
-                        JamModel.getAlbum(albumId);
-                        pageStack.push(Qt.resolvedUrl("JamAlbum.qml"));
+                        pageStack.push(Qt.resolvedUrl("JamAlbum.qml"), {"albumId": item.albumId});
                     }
                 }
                 MenuItem {
                     text: "Go to the artist"
                     onClicked: {
-                        JamModel.getArtist(artistId);
-                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"));
+                        pageStack.push(Qt.resolvedUrl("JamArtist.qml"), {"artistId": item.artistId});
                     }
                 }
             }
@@ -93,20 +95,20 @@ Page {
         PushUpMenu {
             MenuItem {
                 text: "See more ..."
-                onClicked: doSearch()
+                onClicked: model.doSearch()
             }
         }
 
         BusyIndicator {
             id: busy
             anchors.centerIn: parent
-            visible: !searchDone
+            visible: !model.searchDone
             size: BusyIndicatorSize.Large
             running: visible
         }
 
         Text {
-            visible: searchDone && list.count == 0
+            visible: model.searchDone && list.count == 0
             font.pixelSize: Theme.fontSizeLarge
             color: Theme.primaryColor
             anchors.centerIn: parent

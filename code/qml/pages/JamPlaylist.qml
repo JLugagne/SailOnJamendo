@@ -31,7 +31,7 @@ Page {
                 id: header
                 JamModelAlbum {
                     id: alb
-                    albumId: section
+                    albumId: parseInt(section)
                 }
                 Component.onCompleted: alb.getAlbum()
 
