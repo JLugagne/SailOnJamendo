@@ -27,11 +27,9 @@ Item {
                 }
         );
         dbOpened = true;
-        console.log("db opened");
     }
 
     function update() {
-        console.log("load album");
         if(JamDB.JamDatabase !== undefined){
             JamDB.JamDatabase.transaction(
                     function(tx) {
@@ -42,6 +40,7 @@ Item {
                                 var i = 0;
                                 for(i = 0; i < rs.rows.length; i++) {
                                     _albums.append(rs.rows.item(i));
+                                    console.log(rs.rows.item(i).albumId);
                                 }
                             }
                             item.albumsUpdated = true;
@@ -53,32 +52,32 @@ Item {
         }
     }
 
-    function forgetAlbum(albumId)
+    function forgetAlbum(albumName, albumArtist)
     {
         JamDB.JamDatabase.transaction(
             function(tx) {
                 var i = 0;
                 for(i = 0; i < _albums.count; i++){
-                    if(_albums.get(i).albumId == albumId){
+                    if(_albums.get(i).albumTitle == albumName && _albums.get(i).albumArtist == albumArtist){
                         _albums.remove(i);
                         break;
                     }
                 }
-                var rs = tx.executeSql("DELETE FROM album WHERE albumId = ?", [albumId]);
+                var rs = tx.executeSql("DELETE FROM album WHERE albumTitle = ? and albumArtist = ?", [albumName, albumArtist]);
             }
         );
     }
 
     function addAlbumToDB(albumId, albumTitle, albumArtist, albumImage)
     {
-        if(albumId == -1) return;
+        if(albumId <= 0 || albumId == "" || albumId === undefined) return;
         JamDB.JamDatabase.transaction(
                 function(tx) {
-                    var rs = tx.executeSql("SELECT * FROM album WHERE albumId = ?", [albumId]);
+                    var rs = tx.executeSql("SELECT * FROM album WHERE albumTitle = ? and albumArtist = ?", [albumTitle, albumArtist]);
                     if(rs.rows.length == 0){
                         var res = tx.executeSql("INSERT INTO album(albumId, lastPlayed, albumImage, albumTitle, albumArtist) VALUES(?, ?, ?, ?, ?)", [albumId, (new Date()).getTime(), albumImage, albumTitle, albumArtist]);
                     }else{
-                        var res = tx.executeSql("UPDATE album SET lastPlayed = ? WHERE albumId = ?", [(new Date()).getTime(), albumId]);
+                        var res = tx.executeSql("UPDATE album SET lastPlayed = ? WHERE albumTitle = ? and albumArtist = ?", [(new Date()).getTime(), albumTitle, albumArtist]);
                     }
                 }
         );
@@ -88,7 +87,9 @@ Item {
     {
         if(JamModel.jamModel.playlist.currentTrack !== undefined){
             var tr = JamModel.jamModel.playlist.currentTrack;
-            addAlbumToDB(tr._albumId, tr._albumName, tr._artistName, tr._albumImage)
+            var albumName = (tr._albumName == "") ? tr._trackName : tr._albumName;
+            if(tr._albumId <= 0 || tr._albumId == "" || tr._albumId === undefined) return;
+            addAlbumToDB(tr._albumId, albumName, tr._artistName, tr._albumImage)
             var i = 0;
             var found = 0;
             for(i = 0; i < _albums.count; i++){
@@ -99,7 +100,7 @@ Item {
                 }
             }
             if(found == 0){
-                _albums.insert(0, {"albumId": tr._albumId, "lastPlayed": (new Date()).getTime(), "albumImage": tr._albumImage, "albumTitle": tr._albumName, "albumArtist": tr._artistName})
+                _albums.insert(0, {"albumId": tr._albumId, "lastPlayed": (new Date()).getTime(), "albumImage": tr._albumImage, "albumTitle": albumName, "albumArtist": tr._artistName})
             }
         }
     }

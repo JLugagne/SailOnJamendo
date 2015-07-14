@@ -98,7 +98,7 @@ Page {
                     }
                     MenuItem {
                         text: "Forget it"
-                        onClicked: { thisItem.remorseAction("Forget "+albumTitle, function() { lastPlayedAlbums.forgetAlbum(albumId); }) }
+                        onClicked: { thisItem.remorseAction("Forget "+albumTitle, function() { lastPlayedAlbums.forgetAlbum(albumTitle, albumArtist); }) }
                     }
                 }
             }

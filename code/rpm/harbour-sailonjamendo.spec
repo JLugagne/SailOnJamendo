@@ -13,7 +13,7 @@ Name:       harbour-sailonjamendo
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Jamendo's musics player
-Version:    0.19
+Version:    0.20
 Release:    1
 Group:      Applications/Multimedia
 License:    LICENSE

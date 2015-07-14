@@ -57,6 +57,7 @@ Page {
                             onClicked: track.remorseAction("Removing ...", function() { JamModel.jamModel.playlist.removeUrl(_trackUrl); });
                         }
                     }
+
                 }
 
         BusyIndicator {

@@ -30,12 +30,26 @@ Page {
 
     Component {
         id: albumsDelegate
+
         JamDelegateAlbum {
+            JamModelAlbum {
+                id: albumModel
+                albumId: _albumId
+            }
+
             imgSource: _albumImage
             primaryDesc: _albumName
             secondaryDesc: _artistName
             album_id: _albumId
             menu: ContextMenu {
+                MenuItem {
+                    text: "Play the album"
+                    onClicked: { albumModel.callback = albumModel.playAlbum; albumModel.getAlbum(); }
+                }
+                MenuItem {
+                    text: "Add album to queue"
+                    onClicked: { albumModel.callback = albumModel.addAlbumToQueue; albumModel.getAlbum(); }
+                }
                 MenuItem {
                     text: "Go to the artist"
                     onClicked: {

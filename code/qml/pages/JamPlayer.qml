@@ -21,7 +21,6 @@ Audio {
 //                         JamDB.addAlbumToDB(JamModel.jamModel.playlist.currentTrack._albumId, JamModel.jamModel.playlist.currentTrack._albumName, JamModel.jamModel.playlist.currentTrack._artistName, JamModel.jamModel.playlist.currentTrack._albumImage);
 
     onStatusChanged: {
-        console.log(status);
         if((status == Audio.EndOfMedia || status == Audio.InvalidMedia) && JamModel.jamModel.playlist.hasNextTrack()){
             JamModel.jamModel.playlist.nextTrack();
         }
