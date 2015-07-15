@@ -8,16 +8,25 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Jul 15 2015 Lugagne Jeremy <lugagne.jeremy@gmail.com> 0.22
+    - Refactoring of all the code
+    - Add playlist
+    - Add menu into a lot of items
+    - Fix a lot of bugs
+
+* Mon Jul 11 2015 Lugagne Jeremy <lugagne.jeremy@gmail.com> 0.10
+    - Add a player page
+    - Add las played album
+    - Fix some bugs
+
 * Mon Jul 06 2015 Lugagne Jeremy <lugagne.jeremy@gmail.com> 0.6
-- Listing and playing radios
-- Searching for artists, albums and tracks
-- Playing options :
-    - Play only one track
-    - Play a full album
-    - Play all tracks of a selected artist
-- Cover :
-    - Go to next track if any
-    - Pause/Play the current track
-    - Add the album cover of the played track
-
-
+    - Listing and playing radios
+    - Searching for artists, albums and tracks
+    - Playing options :
+        - Play only one track
+        - Play a full album
+        - Play all tracks of a selected artist
+    - Cover :
+        - Go to next track if any
+        - Pause/Play the current track
+        - Add the album cover of the played track

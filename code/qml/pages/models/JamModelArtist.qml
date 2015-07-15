@@ -40,7 +40,7 @@ Item {
 
         for(i = 0; i < results.length; i++){
             var it = results[i];
-            tracks.append({"_trackName": it.name, "_trackUrl": it.audio, "_trackDuration": it.duration, "_albumId": it.album_id, "_albumReleaseDate": it.releasedate, "_albumImage": it.image, "_albumName": it.album_name, "_artistName": it.artist_name, "_artistId": it.artist_id});
+            tracks.append({"_trackName": it.name, "_trackUrl": it.audio, "_trackDuration": parseInt(it.duration), "_albumId": parseInt(it.album_id), "_albumReleaseDate": it.releasedate, "_albumImage": it.image, "_albumName": it.album_name, "_artistName": it.artist_name, "_artistId": it.artist_id});
         }
 
         tracksLoaded = true;
@@ -71,7 +71,7 @@ Item {
                         "_trackName": tr._trackName,
                         "_albumName": tr._albumName,
                         "_albumId": tr._albumId,
-                        "_trackDuration": tr._trackDuration
+                        "_trackDuration": tr._trackDuration.toString()
                     });
         }
 

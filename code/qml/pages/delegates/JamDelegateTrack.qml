@@ -33,12 +33,12 @@ ListItem {
                     if(!item.isCurrentTrack){
                         JamModel.jamModel.playlist.setPlaylist([{
                                                           "_trackUrl":item.trackUrl,
-                                                          "_albumId":item.albumId,
+                                                          "_albumId":parseInt(item.albumId),
                                                           "_albumImage":item.albumImage,
                                                           "_artistName":item.artistName,
                                                           "_trackName":item.trackName,
                                                           "_albumName":item.albumName,
-                                                          "_trackDuration":item.trackDuration
+                                                          "_trackDuration":item.trackDuration.toString()
                                                       }]);
                     }else{
                         JamModel.jamModel.pause = !JamModel.jamModel.pause;

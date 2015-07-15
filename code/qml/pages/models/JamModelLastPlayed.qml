@@ -40,7 +40,6 @@ Item {
                                 var i = 0;
                                 for(i = 0; i < rs.rows.length; i++) {
                                     _albums.append(rs.rows.item(i));
-                                    console.log(rs.rows.item(i).albumId);
                                 }
                             }
                             item.albumsUpdated = true;
@@ -52,18 +51,18 @@ Item {
         }
     }
 
-    function forgetAlbum(albumName, albumArtist)
+    function forgetAlbum(albumId)
     {
         JamDB.JamDatabase.transaction(
             function(tx) {
                 var i = 0;
                 for(i = 0; i < _albums.count; i++){
-                    if(_albums.get(i).albumTitle == albumName && _albums.get(i).albumArtist == albumArtist){
+                    if(_albums.get(i).albumId == albumId){
                         _albums.remove(i);
                         break;
                     }
                 }
-                var rs = tx.executeSql("DELETE FROM album WHERE albumTitle = ? and albumArtist = ?", [albumName, albumArtist]);
+                var rs = tx.executeSql("DELETE FROM album WHERE albumId = ?", [albumId]);
             }
         );
     }
@@ -73,11 +72,11 @@ Item {
         if(albumId <= 0 || albumId == "" || albumId === undefined) return;
         JamDB.JamDatabase.transaction(
                 function(tx) {
-                    var rs = tx.executeSql("SELECT * FROM album WHERE albumTitle = ? and albumArtist = ?", [albumTitle, albumArtist]);
+                    var rs = tx.executeSql("SELECT * FROM album WHERE albumId = ?", [albumId]);
                     if(rs.rows.length == 0){
                         var res = tx.executeSql("INSERT INTO album(albumId, lastPlayed, albumImage, albumTitle, albumArtist) VALUES(?, ?, ?, ?, ?)", [albumId, (new Date()).getTime(), albumImage, albumTitle, albumArtist]);
                     }else{
-                        var res = tx.executeSql("UPDATE album SET lastPlayed = ? WHERE albumTitle = ? and albumArtist = ?", [(new Date()).getTime(), albumTitle, albumArtist]);
+                        var res = tx.executeSql("UPDATE album SET lastPlayed = ? WHERE albumId = ?", [(new Date()).getTime(), albumId]);
                     }
                 }
         );
@@ -100,7 +99,7 @@ Item {
                 }
             }
             if(found == 0){
-                _albums.insert(0, {"albumId": tr._albumId, "lastPlayed": (new Date()).getTime(), "albumImage": tr._albumImage, "albumTitle": albumName, "albumArtist": tr._artistName})
+                _albums.insert(0, {"albumId": parseInt(tr._albumId), "lastPlayed": (new Date()).getTime(), "albumImage": tr._albumImage, "albumTitle": albumName, "albumArtist": tr._artistName})
             }
         }
     }

@@ -8,11 +8,11 @@ import "models"
 Page {
     id: page
 
-    property alias artistId: model.artistId
-    Component.onCompleted: model.getArtist()
+    property alias artistId: artistModel.artistId
+    Component.onCompleted: artistModel.getArtist()
 
     JamModelArtist {
-        id: model
+        id: artistModel
     }
 
     SilicaListView {
@@ -20,7 +20,7 @@ Page {
         anchors.fill: parent
         clip: true
         header: PageHeader {
-                title: model.artistName
+                title: artistModel.artistName
             }
         PullDownMenu {
             MenuItem {
@@ -30,23 +30,23 @@ Page {
 
             }
             MenuItem {
-                text: "Add all tracks to queue"
-                enabled: model.tracksLoaded
-                onClicked: model.addAllToQueue()
+                text: qsTr("Add all tracks to queue")
+                enabled: artistModel.tracksLoaded
+                onClicked: artistModel.addAllToQueue()
             }
             MenuItem {
-                text: "Play all tracks"
-                enabled: model.tracksLoaded
-                onClicked: model.playAll()
+                text: qsTr("Play all tracks")
+                enabled: artistModel.tracksLoaded
+                onClicked: artistModel.playAll()
             }
         }
 
-        model: model.tracks
+        model: artistModel.tracks
 
         section.property: "_albumId"
         section.delegate: JamDelegateAlbum {
                 id: header
-                property variant it: model.getAlbumById(section)
+                property variant it: artistModel.getAlbumById(section)
                 imgSource: it._albumImage
                 primaryDesc: it._albumName
                 secondaryDesc: it._albumReleaseDate
@@ -67,7 +67,7 @@ Page {
         BusyIndicator {
             id: busy
             anchors.centerIn: parent
-            visible: !model.tracksLoaded
+            visible: !artistModel.tracksLoaded
             size: BusyIndicatorSize.Large
             running: visible
         }

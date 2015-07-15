@@ -92,6 +92,7 @@ Item {
 
     function addToPlaylist(arr)
     {
+        console.log("-> "+arr.length)
         var i = 0;
         for(i=0; i < arr.length; i++){
             if(!checkContainsUrl(arr[i]._trackUrl))
